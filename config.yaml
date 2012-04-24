@@ -1,0 +1,6 @@
+name: lilysvc
+version: 2
+
+handle:
+- compress:  if ( out_header["Content-type"]=="text/html" ) compress
+

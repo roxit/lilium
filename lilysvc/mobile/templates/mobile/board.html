@@ -1,0 +1,100 @@
+{% extends "mobile/base.html" %}
+
+{% block title %}
+{{ board }}
+{% endblock %}
+
+{% block body %}
+<div data-role="page" id="boardPage">
+<script>
+	r = {};
+	function buildHeaderElement(hdr) {
+		var ret = $('<li />');
+		ret.addClass("ui-li ui-li-static ui-body-b");
+
+		var item = $("<a />");
+		var href = "/topic/"+hdr.board+"/"+hdr.pid;
+		item.addClass("ui-link-inherit");
+		item.attr("href", href);
+		item.attr("rel", "external");
+		ret.append(item);
+		var tmp = $("<div />");
+		item.append(tmp);
+		item = tmp;
+
+		var title = $("<p />");
+		title.html(hdr.title);
+		title.addClass("header-title");
+		item.append(title);
+
+		var author = $("<span />");
+		author.html(hdr.author);
+		author.addClass("header-author");
+		item.append(author);
+
+		var count = $("<span />");
+		count.addClass("");
+		count.html(hdr.replyCount + "/" + hdr.viewCount);
+		count.addClass("header-count");
+		item.append(count);
+
+		return ret;
+	}
+
+	function extendList(resp) {
+		var page = resp;
+		$.each(page.headerList, function (idx) {
+			var h = buildHeaderElement(this);
+			$("#headerList").append(h);
+		});
+		if (page.prevStart) {
+			r.prevStart = page.prevStart;
+			$("#moreButton").html("更多");
+		} else {
+			$("moreButton").hide();
+		}
+		$("#headerList").listview("refresh");
+		$.mobile.hidePageLoadingMsg();
+	};
+
+	function loadMore() {
+		$.mobile.showPageLoadingMsg();
+		$("#moreButton").html("载入中");
+		var url = "/api/board/"+r.board;
+		if (r.prevStart)
+			url += "/"+r.prevStart;
+		$.ajax({
+			url: url,
+			dataType: 'json',
+			success: extendList,
+			error: function showError(jqXHR, textStatus, errorThrown) {
+				console.log(jqXHR, textStatus, errorThrown);
+			}
+		});
+	};
+
+	$("#moreButton").live("click", loadMore);
+
+	$("#boardPage").live("pageinit", function () {
+		r.board = "{{ board }}";
+		$("#headerList").html("");
+		loadMore();
+	});
+</script>
+
+	<div data-role="header">
+		<a href="/" data-icon="home" data-iconpos="notext">返回</a>
+		<h1>{{ board }}</h1>
+		<a href="#" data-icon="add" class="ui-btn-right">发帖</a>
+	</div>
+	<div data-role="content">
+		<ul data-role="listview" data-theme="b" id="headerList">
+		</ul>
+		<div class="pagination">
+			<a id="moreButton" data-role="button" href="#">更多</a>
+		</div>
+	</div>
+
+</div>
+{% endblock %}
+

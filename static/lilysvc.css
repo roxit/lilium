@@ -1,0 +1,43 @@
+.pagination {
+	text-align: center;
+}
+
+.header-title {
+	font-family: 黑体, Helvetica, Arial, sans-serif;
+	font-weight: bold;
+	font-size: 16px;
+	margin: 0.2em 0;
+}
+
+.header-author {
+	color: blue;
+}
+
+.header-board {
+	color: dimgrey;
+	float: right;
+}
+
+.header-count {
+	color: dimgrey;
+	float: right;
+}
+
+.post-author {
+	color: blue;
+	font-size: 16px;
+}
+
+.post-body {
+	margin: 0.5em 0 0.5em;
+	font-family: 楷体, "Times New Roman", Georgia, serif;
+	font-size: 14px;
+}
+
+.topic-title {
+	font-family: 黑体, Helvetica, Arial, sans-serif;
+	font-weight: bold;
+	font-size: 28px;
+	padding: 15px;
+}
+
