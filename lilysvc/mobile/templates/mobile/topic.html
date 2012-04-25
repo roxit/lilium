@@ -7,95 +7,95 @@
 {% block body %}
 <div data-role="page" id="topicPage">
 
-<script>
-	var r = {};
+    <script>
+        var r = {};
 
-	function buildPostElement(post) {
-		var ret = $('<li />');
-		ret.addClass("ui-li ui-li-static ui-body-c");
+        function buildPostElement(post) {
+            var ret = $('<li />');
+            ret.addClass("ui-li ui-li-static ui-body-c");
 
-		var author = $("<span />");
-		author.html(post.author);
-		author.addClass("post-author");
-		ret.append(author);
+            var author = $("<span />");
+            author.html(post.author);
+            author.addClass("post-author");
+            ret.append(author);
 
-		// use `div` not `p`, otherwise text is not wrapped.
-		var body = $("<div />");
-		body.html(post.body);
-		body.addClass("post-body");
-		ret.append(body);
+            // use `div` not `p`, otherwise text is not wrapped.
+            var body = $("<div />");
+            body.html(post.body);
+            body.addClass("post-body");
+            ret.append(body);
 
-		return ret;
-	}
+            return ret;
+        }
 
-	function extendList(resp) {
-		/*
-		if (resp.error)
-		{
-			$.mobile.hidePageLoadingMsg();
-			$("#moreButton").html(resp.message);
-			return;
-		}
-		*/
-		var topic = resp;
-		if (!r.nextStart) {
-			$("#title").html(topic.postList[0].title);
-		}
-		$.each(topic.postList, function (idx) {
-			var post = buildPostElement(this);
-			$("#postList").append(post);
-		});
+        function extendList(resp) {
+            /*
+            if (resp.error)
+            {
+                $.mobile.hidePageLoadingMsg();
+                $("#moreButton").html(resp.message);
+                return;
+            }
+            */
+            var topic = resp;
+            if (!r.nextStart) {
+                $("#title").html(topic.postList[0].title);
+            }
+            $.each(topic.postList, function (idx) {
+                var post = buildPostElement(this);
+                $("#postList").append(post);
+            });
 
-		if (topic.nextStart) {
-			r.nextStart = topic.nextStart;
-			$("#moreButton").html("更多");
-		} else {
-			$("#moreButton").hide();
-		}
-		$("#postList").listview("refresh");
-		$.mobile.hidePageLoadingMsg();
-	};
+            if (topic.nextStart) {
+                r.nextStart = topic.nextStart;
+                $("#moreButton").html("更多");
+            } else {
+                $("#moreButton").hide();
+            }
+            $("#postList").listview("refresh");
+            $.mobile.hidePageLoadingMsg();
+        };
 
-	function loadMore() {
-		$.mobile.showPageLoadingMsg();
-		$("#moreButton").html("载入中");
+        function loadMore() {
+            $.mobile.showPageLoadingMsg();
+            $("#moreButton").html("载入中");
 
-		var url = "/api/topic/"+r.board+"/"+r.pid;
-		if (r.nextStart)
-			url += "/"+r.nextStart;
-		$.ajax({
-			url: url,
-			dataType: 'json',
-			success: extendList,
-			error: function showError() {
+            var url = "/api/topic/"+r.board+"/"+r.pid;
+            if (r.nextStart)
+                url += "/"+r.nextStart;
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                success: extendList,
+                error: function showError() {
 
-			}
-		});
-	};
+                }
+            });
+        };
 
-	$("#moreButton").live("click", loadMore);
+        $("#moreButton").live("click", loadMore);
 
-	$("#topicPage").live("pageinit", function (event) {
-		r.board = "{{ board }}";
-		r.pid = {{ pid }};
-		$("#postList").html("");
-		loadMore();
-	});
-</script>
+        $("#topicPage").live("pageinit", function (event) {
+            r.board = "{{ board }}";
+            r.pid = {{ pid }};
+            $("#postList").html("");
+            loadMore();
+        });
+    </script>
 
-	<div data-role="header" id="title" class="topic-title">
-		<!--<a data-role="button" data-rel="back">后退</a>-->
-	</div>
-	<div data-role="content">
-		<ul data-role="listview" class="ui-listview" data-theme="b" id="postList">
-		</ul>
-		<div class="pagination">
-			<a id="moreButton" data-role="button" href="#">更多</a>
-		</div>
-	</div>
-	<div data-role="footer" data-position="fixed">
-		<a href="{% url lilysvc.mobile.views.board  board=board %}" data-icon="home" data-iconpos="notext">返回</a>
-		<a href="#" data-icon="add">回复</a>
-	</div>
+    <div data-role="header" id="title" class="topic-title">
+        <!--<a data-role="button" data-rel="back">后退</a>-->
+    </div>
+    <div data-role="content">
+        <ul data-role="listview" class="ui-listview" data-theme="b" id="postList">
+        </ul>
+        <div class="pagination">
+            <a id="moreButton" data-role="button" href="#">更多</a>
+        </div>
+    </div>
+    <div data-role="footer" data-position="fixed">
+        <a href="{% url board  board=board %}" data-icon="home" data-iconpos="notext">返回</a>
+        <a href="#" data-icon="add">回复</a>
+    </div>
 </div>
 {% endblock %}

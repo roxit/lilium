@@ -100,9 +100,10 @@ INSTALLED_APPS = (
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
+LOGOUT_URL = '/logout/'
 
 AUTHENTICATION_BACKENDS = (
-    'lilysvc.account.models.LilyAuthBackend',
+    'lilysvc.account.backends.LilyAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 

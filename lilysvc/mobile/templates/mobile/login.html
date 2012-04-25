@@ -6,28 +6,28 @@
 
 {% block body %}
 <div data-role="page">
-	<div data-role="header">
-		<a href="/" data-icon="home" data-iconpos="notext">返回</a>
-		<h1>登录</h1>
-	</div>
+    <div data-role="header">
+        <a href="{% url home %}" data-icon="home" data-iconpos="notext">返回</a>
+        <h1>登录</h1>
+    </div>
 
-	<div data-role="content">
-		<form action="{% url login %}" method="POST" data-ajax="false">
-			{% csrf_token %}
-			{{ form.non_field_errors }}
-			{% for field in form.visible_fields %}
-				<div data-role="fieldcontain">
-					{{ field.errors }}
-					{{ field.label_tag }} {{ field }}
-					{{ field.help_text }}
-				</div>
-			{% endfor %}
-			{% for hidden in form.hidden_fields %}
-				{{ hidden }}
-			{% endfor %}
-			<input type="submit" value="登录" />
-		</form>
-	</div>
+    <div data-role="content">
+        <form action="{% url login %}" method="POST" data-ajax="false">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for field in form.visible_fields %}
+            <div data-role="fieldcontain">
+                {{ field.errors }}
+                {{ field.label_tag }} {{ field }}
+                {{ field.help_text }}
+            </div>
+            {% endfor %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+            <input type="submit" value="登录" />
+        </form>
+    </div>
 
 </div>
 {% endblock %}

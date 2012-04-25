@@ -7,7 +7,7 @@ class LoginForm(forms.Form):
     username = forms.CharField(label=u'帐号', min_length=2, max_length=12)
     password = forms.CharField(label=u'密码', widget=forms.PasswordInput,
             min_length=4, max_length=12)
-    store_password = forms.BooleanField(label=u'记住密码', required=False, initial=False, help_text=u'密码')
+    save_password = forms.BooleanField(label=u'记住密码', required=False, initial=False, help_text=u'密码')
     next = forms.CharField(required=False, widget=forms.HiddenInput)
 
     error_messages = {
@@ -17,8 +17,10 @@ class LoginForm(forms.Form):
     def clean(self):
         username = self.cleaned_data['username']
         password = self.cleaned_data['password']
+        save_password = self.cleaned_data['save_password']
         if username and password:
-            self.user = authenticate(username=username, password=password)
+            self.user = authenticate(username=username, password=password,
+                    save_password=save_password)
             if self.user is None:
                 raise forms.ValidationError(self.error_messages['invalid_login'])
         return self.cleaned_data

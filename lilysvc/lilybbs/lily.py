@@ -2,30 +2,31 @@
 import logging
 logging.getLogger().setLevel(logging.DEBUG)
 
-from .connection import Connection
-from .models import BoardManager, SessionInfo
+from connection import Connection
+from models import BoardManager, Session
 
 class Lily:
 
-    def __init__(self):
+    def __init__(self, session_str=None):
         self._connection = None
-        self.session = None
+        if session_str:
+            self.load_session(session_str)
         self.board_manager = BoardManager()
 
     @property
     def connection(self):
-        if not self.session:
+        if self._connection is None:
             self._connection = Connection()
-        else:
-            if not self._connection.is_active_login():
-                self.session = self._connection.login(self.session.uid, self.session.password)
         return self._connection
 
     def load_session(self, session_str):
-        session = SessionInfo()
-        session.loads(session_str)
-        self.connection.load_session(session)
+        session = Session.create(session_str)
+        if session:
+            self.connection.load_session(session)
         self.session = session
+
+    def is_logged_in(self):
+        return self.connection.is_logged_in()
 
     def login(self, username, password):
         self.session = self.connection.login(username, password)

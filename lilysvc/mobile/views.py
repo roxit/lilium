@@ -11,10 +11,9 @@ from lilysvc.lilybbs import Lily
 from lilysvc.lilybbs.error import *
 from lilysvc.mobile.forms import LoginForm
 
-def index(request):
+def home(request):
     if request.user.is_authenticated():
-        lily = Lily()
-        lily.load_session(request.user.get_profile().last_session)
+        lily = Lily(request.user.get_profile().last_session)
         try:
             fav = lily.fetch_favorites()
             fav = [(i, lily.board_manager.board_text(i)) for i in fav]
@@ -22,7 +21,7 @@ def index(request):
             fav = None
     else:
         fav = None
-    return render_to_response('mobile/index.html', dict(favorites=fav), context_instance=RequestContext(request))
+    return render_to_response('mobile/home.html', dict(favorites=fav), context_instance=RequestContext(request))
 
 def boardlist(request):
     lily = Lily()

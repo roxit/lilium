@@ -3,25 +3,25 @@
 全站十大
 {% endblock %}
 {% block body %}
-	<div data-role="page" data-theme="c">
-		<div data-role="header">
-			<h1>全站十大</h1>
-		</div>
-		<div data-role="content">
-			<ul data-role="listview">
-				{% for i in page.header_list %}
-					<li data-icon="false" class="ul-li-static ui-body-b">
-						<!--<span class="ui-li-count">{{ i.reply_count }}</span>-->
-						<a href="{% url topic board=i.board pid=i.pid %}" rel="external">
-							<div>
-								<p class="header-title">{{ i.title }}</p>
-								<span class="header-author">{{ i.author }}</span>
-								<span class="header-board">{{ i.board }}</span>
-							</div>
-						</a>
-					</li>
-				{% endfor %}
-			</ul>
-		</div>
-	</div>
+    <div data-role="page" data-theme="c">
+        <div data-role="header">
+            <h1>全站十大</h1>
+        </div>
+        <div data-role="content">
+            <ul data-role="listview">
+                {% for i in page.header_list %}
+                    <li data-icon="false" class="ul-li-static ui-body-b">
+                        <!--<span class="ui-li-count">{{ i.reply_count }}</span>-->
+                        <a href="{% url topic board=i.board pid=i.pid %}" rel="external">
+                            <div>
+                                <p class="header-title">{{ i.title }}</p>
+                                <span class="header-author">{{ i.author }}</span>
+                                <span class="header-board">{{ i.board }}</span>
+                            </div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 {% endblock %}

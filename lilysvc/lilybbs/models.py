@@ -2,9 +2,12 @@
 from datetime import datetime
 import inspect
 import json
+import logging
 import os
 import re
 from xml.etree.ElementTree import ElementTree, Element, SubElement, tostring
+
+logger = logging.getLogger(__name__)
 
 DIR = os.path.dirname(__file__)
 
@@ -137,7 +140,24 @@ class Page:
                 'prevStart': self.prev_start,
         }
     
-class SessionInfo:
+class Session:
+
+    @classmethod
+    def create(cls, session_str=None):
+        ret = cls()
+        try:
+            ret.loads(session_str)
+        except (AttributeError, ValueError):
+            logger.warning('Invalid session_str')
+            return None
+        return ret
+
+    def __str__(self):
+        return '<Session: vd=%s key=%s num=%s uid=%s>' % (self.vd, self.key, self.num, self.uid)
+
+    def __repr__(self):
+        return str(self)
+
     def __init__(self):
         self.vd = None
         self.key = None

@@ -3,7 +3,7 @@ from django.conf.urls.defaults import *
 from lilysvc.mobile.views import *
 
 urlpatterns = patterns('',
-    url(r'^$', index, name='index'),
+    url(r'^$', home, name='home'),
     url(r'^boardlist$', boardlist, name='boardlist'),
     url(r'^top10$', top10, name='top10'),
     url(r'^hot$', hot, name='hot'),

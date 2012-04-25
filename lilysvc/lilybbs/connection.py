@@ -61,7 +61,7 @@ class Connection:
         self._cj.set_cookie(make_cookie('_U_UID', session.uid))
         self._cj.set_cookie(make_cookie('_U_NUM', session.num))
 
-    def is_active_login(self):
+    def is_logged_in(self):
         html = self._do_action('bbsfoot')
         return html.find('bbsqry?userid=guest') == -1
         
@@ -72,7 +72,7 @@ class Connection:
         # TODO: logout existing session
 
         from random import randint
-        session = SessionInfo()
+        session = Session()
         session.vd = str(randint(10000, 100000))
         self.base_url = '{0}vd{1}/'.format(self.BBS_URL, session.vd)
 
