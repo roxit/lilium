@@ -29,15 +29,15 @@
 }
 
 .post-body {
-  margin: 0.5em 0 0.5em;
   font-family: 楷体, "Times New Roman", Georgia, serif;
   font-size: 14px;
+  margin: 0.5em 0 0.5em;
 }
 
 .topic-title {
   font-family: 黑体, Helvetica, Arial, sans-serif;
-  font-weight: bold;
   font-size: 28px;
+  font-weight: bold;
   padding: 15px;
 }
 

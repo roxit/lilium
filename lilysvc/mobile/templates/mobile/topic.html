@@ -10,24 +10,6 @@
     <script>
         var r = {};
 
-        function buildPostElement(post) {
-            var ret = $('<li />');
-            ret.addClass("ui-li ui-li-static ui-body-c");
-
-            var author = $("<span />");
-            author.html(post.author);
-            author.addClass("post-author");
-            ret.append(author);
-
-            // use `div` not `p`, otherwise text is not wrapped.
-            var body = $("<div />");
-            body.html(post.body);
-            body.addClass("post-body");
-            ret.append(body);
-
-            return ret;
-        }
-
         function extendList(resp) {
             /*
             if (resp.error)
@@ -41,10 +23,8 @@
             if (!r.nextStart) {
                 $("#title").html(topic.postList[0].title);
             }
-            $.each(topic.postList, function (idx) {
-                var post = buildPostElement(this);
-                $("#postList").append(post);
-            });
+
+            $('#postTmpl').tmpl(resp.postList).appendTo($("#postList"));
 
             if (topic.nextStart) {
                 r.nextStart = topic.nextStart;
@@ -81,6 +61,15 @@
             $("#postList").html("");
             loadMore();
         });
+    </script>
+
+    <script id="postTmpl" type="text/x-jquery-tmpl">
+        <li class="ui-li ui-li-static ui-body-c">
+            <span class="post-author">${author}</span>
+            <div class="post-body">
+                {% templatetag openbrace %}{% templatetag openbrace %}html body{% templatetag closebrace %}{% templatetag closebrace %}
+            </div>
+        </li>
     </script>
 
     <div data-role="header" id="title" class="topic-title">
