@@ -12,6 +12,7 @@
         function extendList(resp) {
             var page = resp;
             $('#headerTmpl').tmpl(page.headerList).appendTo($("#headerList"));
+            $('time.timeago').timeago();
             if (page.prevStart) {
                 r.prevStart = page.prevStart;
                 $("#moreButton").html("更多");
@@ -52,8 +53,9 @@
             <a href="/topic/${board}/${pid}" class="ui-link-inherit" rel="external">
                 <div>
                     <p class="header-title">${title}</p>
-                    <span class="header-author">${author}<span>
-                    <span class="header-count">${replyCount}/${viewCount}<span>
+                    <span class="header-author">${author}</span>
+                    <time class="timeago" datetime="${date}"></time>
+                    <span class="header-count">${replyCount}/${viewCount}</span>
                 </div>
             </a>
         </li>

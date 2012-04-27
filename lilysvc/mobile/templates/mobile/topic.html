@@ -25,6 +25,7 @@
             }
 
             $('#postTmpl').tmpl(resp.postList).appendTo($("#postList"));
+            $('time.timeago').timeago();
 
             if (topic.nextStart) {
                 r.nextStart = topic.nextStart;
@@ -66,6 +67,7 @@
     <script id="postTmpl" type="text/x-jquery-tmpl">
         <li class="ui-li ui-li-static ui-body-c">
             <span class="post-author">${author}</span>
+            <time class="timeago" datetime="${date}"></time>
             <div class="post-body">
                 {% templatetag openbrace %}{% templatetag openbrace %}html body{% templatetag closebrace %}{% templatetag closebrace %}
             </div>

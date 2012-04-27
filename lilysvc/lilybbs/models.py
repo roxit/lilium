@@ -14,8 +14,8 @@ DIR = os.path.dirname(__file__)
 class Post:
     AUTHOR_RE = re.compile(ur'发信人: (\w+?) \(')
     TITLE_RE = re.compile(ur'标  题: (.+?)$')
-    TIME_RE = re.compile(ur'\((.+)\)$')
-    TIME_FMT = u'%a %b %d %H:%M:%S %Y'
+    DATE_RE = re.compile(ur'\((.+)\)$')
+    DATE_FMT = u'%a %b %d %H:%M:%S %Y'
     IP_RE = re.compile(ur'\[FROM: (.+)\]')
     COLOR_RE = re.compile(ur'\x1b\[\d*(;\d+)?m')
     IMG_RE = re.compile(ur'(http://(www\.)?[\w./-]+?\.(jpe?g|gif|png))')
@@ -42,12 +42,11 @@ class Post:
                 'body': self.body,
                 'ip': self.ip,
                 'num': self.num,
-                'time': self.time.isoformat(),
+                'date': self.date.isoformat(),
                 'title': self.title,
         }
 
     def parse_post(self, txt):
-        # damn it
         i = txt.find(u'发信站')
         if txt[i-1] != u'\n':
             txt = txt.replace(u'发信站', u'\n发信站', 1)
@@ -55,8 +54,8 @@ class Post:
         txt = txt.splitlines()
         self.author = self.AUTHOR_RE.search(txt[0]).group(1)
         self.title = self.TITLE_RE.search(txt[1]).group(1)
-        time_str = self.TIME_RE.search(txt[2]).group(1)
-        self.time = datetime.strptime(time_str, self.TIME_FMT)
+        date_str = self.DATE_RE.search(txt[2]).group(1)
+        self.date = datetime.strptime(date_str, self.DATE_FMT)
         self.ip = self.IP_RE.search(txt[-1]).group(1)
         self._body = txt[4:-2]
         self.render()
@@ -110,6 +109,7 @@ class Header:
     def __init__(self):
         self.author = None
         self.board = None
+        self.date = None
         self.num = None
         self.pid = None
         self.reply_count = None
@@ -120,6 +120,7 @@ class Header:
         return {
                 'author': self.author,
                 'board': self.board,
+                'date': self.date.isoformat(),
                 'num': self.num,
                 'pid': self.pid,
                 'replyCount': self.reply_count,

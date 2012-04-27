@@ -3,6 +3,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from cookielib import CookieJar
+from datetime import datetime
 import re
 import urllib2
 from urllib2 import urlopen, URLError
@@ -19,6 +20,7 @@ class Connection:
     ENCODING = 'gb18030'
     USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:9.0.1) Gecko/20100101 Firefox/9.0.1'
     BBS_URL = 'http://bbs.nju.edu.cn/'
+    DATE_FORMAT = '%b %d %H:%M'
     base_url = 'http://bbs.nju.edu.cn/'
 
     def __init__(self, session=None):
@@ -157,7 +159,9 @@ class Connection:
             params['start'] = start
         html = self._do_action('bbstdoc', params)
         soup = BeautifulSoup(html)
+
         items = soup.findAll('tr')[1:]
+        year = datetime.now().year
         ret = Page(board)
         for i in items:
             cells = i.findAll('td')
@@ -168,6 +172,9 @@ class Connection:
             except ValueError:
                 continue
             h.author = cells[2].text.strip()
+            h.date = cells[3].text.strip()
+            h.date = datetime.strptime(h.date, self.DATE_FORMAT)
+            h.date = h.date.replace(year = year)
             h.title = cells[4].text.strip()[2:]
             h.pid = parse_pid(cells[4].a['href'])
             tmp = cells[5].text.strip()

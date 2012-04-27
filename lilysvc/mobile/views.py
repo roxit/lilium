@@ -47,7 +47,7 @@ def hot(request):
 def build_response(result=None, exc=None):
     JSON_MIME = 'application/json'
     if exc:
-        return HttpResponse(json.dumps(str(e)), status=400, mimetype=JSON_MIME)
+        return HttpResponse(json.dumps(str(exc)), status=400, mimetype=JSON_MIME)
     return HttpResponse(json.dumps(result), mimetype=JSON_MIME)
 
 def api_board(request, board, start=None):
