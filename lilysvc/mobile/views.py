@@ -92,7 +92,7 @@ def logout(request):
     return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
 
 def about(request):
-    pass
+    return render_to_response('mobile/about.html')
 
 @login_required
 def compose(request, board):

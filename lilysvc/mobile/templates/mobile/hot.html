@@ -6,6 +6,7 @@
 {% block body %}
 <div data-role="page">
     <div data-role="header">
+        <a href="{% url home %}" data-rel="back" data-icon="back" data-iconpos="notext">返回</a>
         <h1>热门讨论区</h1>
     </div>
 
@@ -17,9 +18,12 @@
                 {% for h in s %}
                 <li>
                     <a href="{% url topic board=h.board pid=h.pid %}" rel="external">
-                        {{ h.title }}
-                        <br>
-                        {{ h.board }}
+                        <div class="header">
+                            <span class="header-title">{{ h.title }}</span>
+                            <div class="header-info">
+                                <span class="header-board">{{ h.board }}</span>
+                            </div>
+                        </div>
                     </a>
                 </li>
                 {% endfor %}

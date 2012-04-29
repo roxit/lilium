@@ -12,7 +12,7 @@ jQuery.timeago.settings.strings = {
   day: "1天",
   days: "%d天",
   month: "1个月",
-  months: "%d月",
+  months: "%d个月",
   year: "1年",
   years: "%d年",
   numbers: [],

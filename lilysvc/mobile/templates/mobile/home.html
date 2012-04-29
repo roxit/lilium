@@ -9,34 +9,34 @@
     </div>
 
     <div data-role="content">
-        <div>
-            <a href="{% url boardlist %}">分类讨论区</a>
+        <div class="home-item">
+            <a href="{% url boardlist %}" data-role="button" data-icon="grid" data-theme="b">分类讨论区</a>
         </div>
-        <div>
-            <a href="{% url top10 %}">全站十大</a>
+        <div class="home-item">
+            <a href="{% url top10 %}" data-role="button" data-icon="start" data-theme="b">全站十大</a>
         </div>
-        <div>
-            <a href="{% url hot %}">各区热点</a>
+        <div class="home-item">
+            <a href="{% url hot %}" data-role="button" data-icon="info" data-theme="b">各区热点</a>
         </div>
 
-        <div data-role="collapsible" data-theme="b" data-content-theme="c">
+        <div class="home-item" data-role="collapsible" data-theme="b" data-content-theme="c">
             <h3>预订讨论区</h3>
             <ul data-role="listview" data-inset="true">
                 {% if user.is_authenticated %}
-                    {% for name, text in favorites %}
-                        <li>
-                            <a href="{% url board board=name %}" rel="external">{{ text }} ({{ name}})</a>
-                        </li>
-                    {% endfor %}
-                {% else %}
+                {% for name, text in favorites %}
                     <li>
-                        请先登录
+                        <a href="{% url board board=name %}" rel="external">{{ text }} ({{ name}})</a>
                     </li>
+                {% endfor %}
+                {% else %}
+                <li>
+                    请先登录
+                </li>
                 {% endif %}
             </ul>
         </div>
-        <div>
-            <a href="#">关于</a>
+        <div class="home-item">
+            <a href="{% url about %}" data-role="button" data-theme="b">关于</a>
         </div>
     </div>
 

@@ -5,7 +5,8 @@
 {% block body %}
 <div data-role="page">
     <div data-role="header">
-        <h1>分类讨论区</h1>
+        <a href="{% url home %}" data-rel="back" data-icon="back" data-iconpos="notext">返回</a>
+        <h2>分类讨论区</h2>
     </div>
 
     <div data-role="content">
@@ -18,8 +19,8 @@
                     <li>
                         <a href="{% url board board=b.name %}" rel="external">
                             <div class="ui-grid-a">
-                                <div class="ui-block-a">{{ b.name }}</div>
-                                <div class="ui-block-b">{{ b.text }}</div>
+                                <div class="ui-block-a">{{ b.text }}</div>
+                                <div class="ui-block-b">{{ b.name }}</div>
                             </div>
                         </a>
                     </li>

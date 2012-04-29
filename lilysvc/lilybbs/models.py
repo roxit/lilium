@@ -61,7 +61,6 @@ class Post:
         self._body = txt[4:-2]
         self.render()
     
-    # TODO:
     def render(self):
         if self.body is not None:
             return

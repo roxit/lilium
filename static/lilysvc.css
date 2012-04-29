@@ -1,15 +1,37 @@
-.meta,.post-meta, header-meta {
+body {
+  font-family: 黑体, Helvetica, Arial, sans-serif;
+}
+
+.meta, .post-meta, header-meta {
   display: none;
 }
 
 .pagination {
+  background: #999; /* for non-css3 browsers */
+  background: -moz-linear-gradient(top, rgba(30,87,153,1) 0%, rgba(125,185,232,0) 50%, rgba(125,185,232,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(30,87,153,1)), color-stop(50%,rgba(125,185,232,0)), color-stop(100%,rgba(125,185,232,1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(125,185,232,0) 50%,rgba(125,185,232,1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(125,185,232,0) 50%,rgba(125,185,232,1) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(125,185,232,0) 50%,rgba(125,185,232,1) 100%); /* IE10+ */
+  background: linear-gradient(top, rgba(30,87,153,1) 0%,rgba(125,185,232,0) 50%,rgba(125,185,232,1) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+
+  margin: 1em 0 0 0;
+  padding: 0.6em 0 0.6em;
   text-align: center;
+  text-decoration: none;
+}
+
+.pagination:hover {
+  cursor: pointer
+}
+
+.home-item {
 }
 
 .header-title {
-  font-family: 黑体, Helvetica, Arial, sans-serif;
-  font-weight: bold;
   font-size: 16px;
+  font-weight: bold;
   margin: 0.2em 0;
 }
 
@@ -19,12 +41,21 @@
 
 .header-board {
   color: dimgrey;
-  float: right;
 }
 
 .header-count {
+  margin-left: 1.5em;
+}
+
+.header-date {
+  font-family: cursive;
+  margin-left: 1.5em;
+}
+
+.header-info {
   color: dimgrey;
-  float: right;
+  font-family: cursive;
+  font-size: 12px;
 }
 
 .post-author {
@@ -38,8 +69,18 @@
   margin: 0.5em 0 0.5em;
 }
 
+.post-date {
+  font-family: cursive;
+  margin-left: 1.5em;
+}
+
+.post-info {
+  color: dimgrey;
+  font-family: cursive;
+  font-size: 12px;
+}
+
 .topic-title {
-  font-family: 黑体, Helvetica, Arial, sans-serif;
   font-size: 28px;
   font-weight: bold;
   padding: 15px;

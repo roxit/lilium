@@ -79,8 +79,10 @@
                 <span class="post-pid">${pid}</span>
                 <span class="post-num">${num}</span>
             </div>
-            <span class="post-author">${author}</span>
-            <time class="post-date timeago" datetime="${date}"></time>
+            <div class="post-info">
+                <span class="post-author">${author}</span>
+                <time class="post-date timeago" datetime="${date}"></time>
+            </div>
             <div class="post-body">
                 {% templatetag openbrace %}{% templatetag openbrace %}html body{% templatetag closebrace %}{% templatetag closebrace %}
             </div>
@@ -88,14 +90,14 @@
     </script>
 
     <div data-role="header">
-        <a href="{% url board board=board %}" data-rel="back" data-icon="back" data-iconpos="notext">后退</a>
+        <a href="{% url board board=board %}" data-rel="back" data-icon="back" data-iconpos="notext">返回</a>
         <h2 id="title" class="topic-title"></h2>
     </div>
     <div data-role="content">
         <ul data-role="listview" class="ui-listview" data-theme="b" id="postList">
         </ul>
-        <div class="pagination">
-            <a id="moreButton" data-role="button" href="#">更多</a>
+        <div id="moreButton" class="pagination">
+            更多
         </div>
     </div>
     <div data-role="footer" data-position="fixed">

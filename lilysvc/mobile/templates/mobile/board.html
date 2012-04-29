@@ -51,27 +51,29 @@
     <script id="headerTmpl" type="text/x-jquery-tmpl">
         <li class="ui-li ui-li-static ui-body-b">
             <a href="/topic/${board}/${pid}" class="ui-link-inherit" rel="external">
-                <div>
+                <div class="header">
                     <p class="header-title">${title}</p>
-                    <span class="header-author">${author}</span>
-                    <time class="timeago" datetime="${date}"></time>
-                    <span class="header-count">${replyCount}/${viewCount}</span>
+                    <div class="header-info">
+                        <span class="header-author">${author}</span>
+                        <time class="header-date timeago" datetime="${date}"></time>
+                    </div>
+                    <span class="ui-li-count">${replyCount}回复</span>
                 </div>
             </a>
         </li>
     </script>
 
     <div data-role="header">
-        <a href="{% url home %}" data-icon="home" data-iconpos="notext">返回</a>
-        <h1>{{ board }}</h1>
-        <a href="{% url compose board=board %}" data-theme="b" data-icon="add" class="ui-btn-right">发帖</a>
+        <a href="{% url home %}" data-rel="back" data-icon="back" data-iconpos="notext">返回</a>
+        <h2>{{ board }}</h2>
+        <a href="{% url compose board=board %}"  data-icon="add" class="ui-btn-right">发帖</a>
     </div>
 
     <div data-role="content">
         <ul data-role="listview" data-theme="b" id="headerList">
         </ul>
-        <div class="pagination">
-            <a id="moreButton" data-role="button" data-theme="e" href="#">更多</a>
+        <div id="moreButton" class="pagination">
+            更多
         </div>
     </div>
 
