@@ -5,6 +5,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
+    (r'^fetch/', 'lilysvc.fetch.fetch'),
     (r'^', include('lilysvc.mobile.urls')),
 )
 
