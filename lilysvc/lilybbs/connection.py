@@ -5,9 +5,11 @@ logger = logging.getLogger(__name__)
 from cookielib import CookieJar
 from datetime import datetime
 import re
+from textwrap import wrap
 import urllib2
 from urllib2 import urlopen, URLError
 from urllib import quote
+from urlparse import urlparse, parse_qs
 
 from BeautifulSoup import BeautifulSoup
 
@@ -21,6 +23,7 @@ class Connection:
     USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:9.0.1) Gecko/20100101 Firefox/9.0.1'
     BBS_URL = 'http://bbs.nju.edu.cn/'
     DATE_FORMAT = '%b %d %H:%M'
+    LINE_WIDTH = 40
     base_url = 'http://bbs.nju.edu.cn/'
 
     def __init__(self, session=None):
@@ -45,7 +48,7 @@ class Connection:
         body = []
         if data:
             for k, v in data.items():
-                body.append('{0}={1}'.format(quote(k.encode(self.ENCODING)), quote(str(v).encode(self.ENCODING))))
+                body.append('{0}={1}'.format(quote(k), quote(unicode(v).encode(self.ENCODING))))
         try:
             response = self._opener.open(url, '&'.join(body) if data else None)
         except URLError as e:
@@ -103,33 +106,37 @@ class Connection:
         self._cj.clear()
         self.base_url = self.BBS_URL
 
-    def send_topic(self, board, title, text, pid=None, gid=None, signature=0, autocr='on'):
+    def compose(self, board, title, body, pid=None, gid=None, signature=0):
+        '''
+        XXX: unicode
+        '''
         params = {'board': board}
+        body = u'\n'.join(wrap(body, self.LINE_WIDTH))
         data = {'title': title,
-                'text': text,
-                'autocr': autocr,
-                'signature': signature}
-        if pid:
+                'text': body}
+        if pid is not None:
             data['reid'] = pid
             data['pid'] = gid
+        data['signature'] = signature
         html = self._do_action('bbssnd', params, data)
-        if 'Refresh' in html:
-            return True
-        else:
-            return False
+        return 'Refresh' in html
 
-    def fetch_post(self, pid, board, num):
+    def fetch_post(self, board, pid, num):
         params = {'board': board,
                   'file': pid2str(pid),
                   'num': num}
         html = self._do_action('bbscon', params)
         soup = BeautifulSoup(html)
         txt = soup.find('textarea').text
-        ret = Post(pid, board, num)
+        ret = Post(board, pid, num)
         ret.parse_post(txt)
         # TODO: works for 'x' post
-        ret.gid = soup.findAll('a')[-1]['href']
-        ret.gid = ret.gid[ret.gid.rfind('=')+1:]
+        s = soup.findAll('a')[-1]['href']
+        gid = parse_qs(urlparse(s).query).get('gid', None)
+        if gid is not None:
+            ret.gid = gid[0]
+        else:
+            ret.gid = None
         return ret
 
     def fetch_topic(self, board, pid, start=None):
@@ -195,7 +202,7 @@ class Connection:
         html = self._do_action('bbstop10')
         soup = BeautifulSoup(html)
         items = soup.findAll('tr')[1:]
-        ret = Page('全站十大')
+        ret = Page(u'全站十大')
         for i in items:
             cells = i.findAll('td')
             h = Header()
@@ -251,7 +258,7 @@ class Connection:
             try:
                 text = re.search(ur'\[(\w+?)区\]<hr', html, re.UNICODE).group(1)
             except AttributeError as e:
-                raise ContentError('请勿过快刷新页面')
+                raise ContentError(u'请勿过快刷新页面')
             section = Section(i, text)
             items = soup.findAll('tr')[1:]
             for i in items:

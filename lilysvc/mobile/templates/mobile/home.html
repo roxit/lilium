@@ -30,7 +30,7 @@
                     {% endfor %}
                 {% else %}
                     <li>
-                        请登录同步预订讨论区
+                        请先登录
                     </li>
                 {% endif %}
             </ul>
@@ -42,9 +42,9 @@
 
     <div data-role="footer" class="ui-bar" data-position="fixed">
         {% if user.is_authenticated %}
-            <a href="{% url logout %}" data-role="button" data-icon="delete">注销 {{user.username }}</a>
+            <a href="{% url logout %}" data-role="button" data-icon="delete">注销{{user.username }}</a>
         {% else %}
-            <a href="{% url login %}" data-role="button" data-icon="plus">登录</a>
+            <a href="{% url login %}" data-rel="dialog" data-role="button" data-icon="plus">登录</a>
         {% endif %}
     </div>
 </div>

@@ -17,6 +17,35 @@ def create_profile(*args, **kwargs):
 
 post_save.connect(create_profile, sender=User)
 
+def get_active_connection(username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return None
+    profile = user.get_profile()
+    lily = Lily(profile.last_session)
+    if lily.is_logged_in():
+        logger.debug('{0}: last_session valid. Success'.format(user))
+        return lily
+    if profile.lily_password is not None:
+        lily = Lily()
+        session = lily.login(user.username, profile.lily_password)
+        if session:
+            profile.last_session = session.dumps()
+            profile.save()
+            logger.debug('{0}: saved password valid. Success'.format(user))
+            return lily
+        else:
+            profile.lily_password = None
+            profile.save()
+            logger.debug('{0}: password changed. Failure'.format(user))
+            return None
+    else:
+        profile.last_session = None
+        profile.save()
+        logger.debug('{0}: no saved password. Failure'.format(user))
+        return None
+
 class LilyAuthBackend:
     
     def authenticate(self, username=None, password=None, save_password=False):
@@ -51,27 +80,9 @@ class LilyAuthBackend:
         except User.DoesNotExist:
             logger.debug('User with id {0} does not exist. Failure'.format(user_id))
             return None
-        profile = ret.get_profile()
-        lily = Lily(profile.last_session)
-        if lily.is_logged_in():
-            logger.debug('{0}: last_session valid. Success'.format(ret))
+        lily = get_active_connection(ret.username)
+        if lily:
             return ret
-        if profile.lily_password is not None:
-            lily = Lily()
-            session = lily.login(ret.username, profile.lily_password)
-            if session:
-                profile.last_session = session.dumps()
-                profile.save()
-                logger.debug('{0}: saved password valid. Success'.format(ret))
-                return ret
-            else:
-                profile.lily_password = None
-                profile.save()
-                logger.debug('{0}: password changed. Failure'.format(ret))
-                return None
         else:
-            profile.last_session = None
-            profile.save()
-            logger.debug('{0}: no saved password. Failure'.format(ret))
             return None
 

@@ -40,9 +40,10 @@ class Post:
                 'author': self.author,
                 'board': self.board,
                 'body': self.body,
+                'date': self.date.isoformat(),
                 'ip': self.ip,
                 'num': self.num,
-                'date': self.date.isoformat(),
+                'pid': self.pid,
                 'title': self.title,
         }
 

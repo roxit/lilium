@@ -64,7 +64,7 @@
     <div data-role="header">
         <a href="{% url home %}" data-icon="home" data-iconpos="notext">返回</a>
         <h1>{{ board }}</h1>
-        <a href="#" data-theme="b" data-icon="add" class="ui-btn-right">发帖</a>
+        <a href="{% url compose board=board %}" data-theme="b" data-icon="add" class="ui-btn-right">发帖</a>
     </div>
 
     <div data-role="content">

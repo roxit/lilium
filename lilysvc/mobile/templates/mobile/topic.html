@@ -62,20 +62,34 @@
             $("#postList").html("");
             loadMore();
         });
+
+        $('#composeButton').live('click', function (event) {
+            var board = $('.post:first .post-board').text();
+            var pid = $('.post:first .post-pid').text();
+            var num = $('.post:first .post-num').text();
+            var url = '/compose/'+board+'/?pid='+pid+'&num='+num;
+            $.mobile.changePage(url, {transition: 'pop'});
+        });
     </script>
 
     <script id="postTmpl" type="text/x-jquery-tmpl">
-        <li class="ui-li ui-li-static ui-body-c">
+        <li class="post ui-li ui-li-static ui-body-c">
+            <div class="post-meta">
+                <span class="post-board">${board}</span>
+                <span class="post-pid">${pid}</span>
+                <span class="post-num">${num}</span>
+            </div>
             <span class="post-author">${author}</span>
-            <time class="timeago" datetime="${date}"></time>
+            <time class="post-date timeago" datetime="${date}"></time>
             <div class="post-body">
                 {% templatetag openbrace %}{% templatetag openbrace %}html body{% templatetag closebrace %}{% templatetag closebrace %}
             </div>
         </li>
     </script>
 
-    <div data-role="header" id="title" class="topic-title">
-        <!--<a data-role="button" data-rel="back">后退</a>-->
+    <div data-role="header">
+        <a href="{% url board board=board %}" data-rel="back" data-icon="back" data-iconpos="notext">后退</a>
+        <h2 id="title" class="topic-title"></h2>
     </div>
     <div data-role="content">
         <ul data-role="listview" class="ui-listview" data-theme="b" id="postList">
@@ -85,8 +99,8 @@
         </div>
     </div>
     <div data-role="footer" data-position="fixed">
-        <a href="{% url board  board=board %}" data-icon="home" data-iconpos="notext">返回</a>
-        <a href="#" data-icon="add">回复</a>
+        <a id="composeButton" data-icon="add">回复</a>
     </div>
 </div>
 {% endblock %}
+

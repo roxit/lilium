@@ -1,3 +1,7 @@
+.meta,.post-meta, header-meta {
+  display: none;
+}
+
 .pagination {
   text-align: center;
 }

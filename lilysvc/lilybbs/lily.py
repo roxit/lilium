@@ -35,10 +35,11 @@ class Lily:
     def logout(self):
         self.connection.logout()
 
-    def send_topic(self, board, title, body):
-        ret = self.connection.send_topic(board, title, body)
+    def compose(self, board, title, body, pid=None, gid=None, signature=0):
+        ret = self.connection.compose(board, title, body, pid, gid, signature)
+        return ret
 
-    def fetch_post(board, pid, num):
+    def fetch_post(self, board, pid, num):
         ret = self.connection.fetch_post(board, pid, num)
         return ret 
 
