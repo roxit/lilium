@@ -17,8 +17,10 @@ class Post:
     DATE_RE = re.compile(ur'\((.+)\)$')
     DATE_FMT = u'%a %b %d %H:%M:%S %Y'
     IP_RE = re.compile(ur'\[FROM: (.+)\]')
+
     COLOR_RE = re.compile(ur'\x1b\[\d*(;\d+)?m')
     IMG_RE = re.compile(ur'(http://(www\.)?[\w./-]+?\.(jpe?g|gif|png))')
+    LINE_CHARS = 39
     FACE_LIST = None
 
     def __init__(self, board=None, pid=None, num=None):
@@ -29,7 +31,8 @@ class Post:
         if not self.FACE_LIST:
             with open(os.path.join(DIR, 'resources/face_list.json')) as f:
                 self.FACE_LIST = json.load(f)
-        self.body = None
+        self.raw_body = None
+        self.rendered_body = None
 
     def __str__(self):
         t = filter(lambda x: not x[0].startswith('__'), inspect.getmembers(self))
@@ -58,32 +61,41 @@ class Post:
         date_str = self.DATE_RE.search(txt[2]).group(1)
         self.date = datetime.strptime(date_str, self.DATE_FMT)
         self.ip = self.IP_RE.search(txt[-1]).group(1)
-        self._body = txt[4:-2]
+        self.raw_body = txt[4:-2]
         self.render()
     
     def render(self):
-        if self.body is not None:
-            return
+        if self.rendered_body is not None:
+            return self.rendered_body
         p = re.compile(ur'[-]+')
-        body = self._body[:]
-        for i in range(len(body)):
-            if not body[i].strip():
-                body[i] = u'<br/>'
-        self.body = u''.join(i.rstrip() for i in body)
-        self.body = self.COLOR_RE.sub("", self.body)
-        self.body = self.IMG_RE.sub(ur'<br><img src="/fetch?url=\1" alt="\1" /><br>', self.body)
+        body = []
+        prev_len = 0
+        for i in self.raw_body:
+            i = i.rstrip()
+            if len(i) == 0:
+                continue
+            if prev_len > self.LINE_CHARS and i[0] not in [u' ', u'-', u'~', '*']:
+                body[-1] += i
+            else:
+                body.append(i)
+            prev_len = len(i)
+        while len(body) > 0 and len(body[-1]) == 0:
+            body.pop()
+        body = u'\n'.join(u'<p>{0}</p>'.format(i.strip()) for i in body)
 
+        body = self.COLOR_RE.sub("", body)
+        body = self.IMG_RE.sub(ur'<br><img src="/fetch?url=\1" alt="\1" /><br>', body)
         for i in self.FACE_LIST:
-            self.body = self.body.replace(i,
+            body = body.replace(i,
                 u'<img src="http://bbs.nju.edu.cn%s" alt="%s" />' % (self.FACE_LIST[i], i))
-    '''
-    # TODO:
+        return body
+
     @property
     def body(self):
-        #if self._str is None:
-        self.render()
-        return self._str
-    '''
+        if self.rendered_body is not None:
+            return self.rendered_body
+        self.rendered_body = self.render()
+        return self.rendered_body
 
 class Topic:
     def __init__(self, board=None, pid=None):

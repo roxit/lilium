@@ -68,6 +68,7 @@ def api_topic(request, board, pid, start=None):
     try:
         topic = lily.fetch_topic(board, pid, start)
     except Exception as e:
+        raise
         return build_response(exc=e)
     return build_response(topic.json())
 
