@@ -20,6 +20,7 @@ class Post:
 
     COLOR_RE = re.compile(ur'\x1b\[\d*(;\d+)?m')
     IMG_RE = re.compile(ur'(http://(www\.)?[\w./-]+?\.(jpe?g|gif|png))')
+    #URL_RE = re.compile(ur'http://(www\.)?[\w./-]+?$')
     LINE_CHARS = 39
     FACE_LIST = None
 
@@ -74,17 +75,18 @@ class Post:
             i = i.rstrip()
             if len(i) == 0:
                 continue
-            if prev_len > self.LINE_CHARS and i[0] not in [u' ', u'-', u'~', '*']:
+            if prev_len > self.LINE_CHARS and i[0] not in [u' ', u'-', u'~', u'*', u'※', u'【']:
                 body[-1] += i
             else:
                 body.append(i)
             prev_len = len(i)
-        while len(body) > 0 and len(body[-1]) == 0:
+        while len(body) > 0 and (len(body[-1]) == 0 or body[-1] == u'--'):
             body.pop()
         body = u'\n'.join(u'<p>{0}</p>'.format(i.strip()) for i in body)
 
         body = self.COLOR_RE.sub("", body)
-        body = self.IMG_RE.sub(ur'<br><img src="/fetch?url=\1" alt="\1" /><br>', body)
+        body = self.IMG_RE.sub(ur'<img src="/fetch?url=\1" alt="\1" style="display: block"/>', body)
+        #body = self.URL_RE.sub(ur'<a href="\1" alt="\1" />', body)
         for i in self.FACE_LIST:
             body = body.replace(i,
                 u'<img src="http://bbs.nju.edu.cn%s" alt="%s" />' % (self.FACE_LIST[i], i))

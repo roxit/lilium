@@ -7,6 +7,7 @@
 {% block body %}
 <div data-role="page">
     <div data-role="header">
+        <a href="{% url board board=board %}" data-icon="back" data-iconpos="notext">返回</a>
         <h3>
             {% if is_reply %}
             Re: {{ post.title }}
