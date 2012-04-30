@@ -1,5 +1,4 @@
 body {
-  font-family: 黑体, Helvetica, Arial, sans-serif;
 }
 
 .meta, .post-meta, header-meta {
@@ -72,6 +71,7 @@ body {
 
 .post-body p {
   font-size: 18px;
+  white-space: normal;
 }
 
 .post-date {
