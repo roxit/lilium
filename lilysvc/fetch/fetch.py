@@ -2,17 +2,13 @@ import logging
 from StringIO import StringIO
 from urllib2 import urlopen
 
-from django.conf import settings
 from django.http import HttpResponse, Http404
 from PIL import Image
 import pylibmc
 
 logger = logging.getLogger(__name__)
 
-if settings.IS_SAE:
-    mc = pylibmc.Client()
-else:
-    mc = pylibmc.Client(['127.0.0.1'])
+mc = pylibmc.Client(['127.0.0.1'])
 
 DEFAULT_RESOLUTION = 400
 
