@@ -7,7 +7,7 @@ class LoginForm(forms.Form):
     username = forms.CharField(label=u'帐号', min_length=2, max_length=12)
     password = forms.CharField(label=u'密码', widget=forms.PasswordInput,
             min_length=4, max_length=12)
-    save_password = forms.BooleanField(label=u'记住密码', required=False, initial=False, help_text=u'密码')
+    save_password = forms.BooleanField(label=u'记住密码', required=False, initial=False, help_text=u'记住密码后服务器会自动登陆小百合')
 
     error_messages = {
         'invalid_login': u'用户名或密码错误'
