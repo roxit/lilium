@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+from urllib import quote, unquote
 
 from django.conf import settings
 from django import forms
@@ -78,19 +79,23 @@ def api_topic(request, board, pid, start=None):
     return build_response(topic.json())
 
 def login(request):
-    redir = request.GET.get('next', settings.LOGIN_REDIRECT_URL)
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             store_password = form.cleaned_data.get('store_password', False)
+            redir = unquote(request.POST.get('next', settings.LOGIN_REDIRECT_URL))
             auth_login(request, form.get_user())
             return HttpResponseRedirect(redir)
+        else:
+            redir = request.POST.get('next', settings.LOGIN_REDIRECT_URL)
     else:
         form = LoginForm()
+        redir = request.GET.get('next', settings.LOGIN_REDIRECT_URL)
+    form.fields['next'].widget.attrs['value'] = quote(redir)
     return render_to_response('mobile/login.html',
-            dict(form=form, redir=redir),
+            dict(form=form),
             context_instance=RequestContext(request))
 
 def logout(request):

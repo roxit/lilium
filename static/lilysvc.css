@@ -15,10 +15,10 @@ body {
   background: linear-gradient(top, rgba(30,87,153,1) 0%,rgba(125,185,232,0) 50%,rgba(125,185,232,1) 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
 
-  margin: 1em 0 0 0;
   padding: 0.6em 0 0.6em;
   text-align: center;
   text-decoration: none;
+  width: 100%;
 }
 
 .pagination:hover {
@@ -31,7 +31,7 @@ body {
 .header-title {
   font-size: 16px;
   font-weight: bold;
-  margin: 0.2em 0;
+  margin: 0.2em 0 0.2em;
 }
 
 .header-author {
@@ -86,9 +86,12 @@ body {
   font-size: 18px;
 }
 
-.topic-title {
+#topicPage .topic-title {
   font-size: 28px;
   font-weight: bold;
+  margin: 0 16px 0 16px;
   padding: 15px;
+  text-align: center;
+  white-space: normal;
 }
 

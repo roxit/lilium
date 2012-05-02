@@ -11,7 +11,7 @@
     </div>
 
     <div data-role="content">
-        <form action="/login/?next={{ redir }}" method="POST" data-ajax="false">
+        <form action="/login/" method="POST" data-ajax="false">
             {% csrf_token %}
             {{ form.non_field_errors }}
             {% for field in form.visible_fields %}
