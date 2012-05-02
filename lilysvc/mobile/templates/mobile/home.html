@@ -1,4 +1,6 @@
 {% extends "mobile/base.html" %}
+{% load section_text %}
+
 {% block title %}
 首页
 {% endblock %}
@@ -9,14 +11,16 @@
     </div>
 
     <div data-role="content">
-        <div class="home-item">
-            <a href="{% url boardlist %}" data-role="button" data-icon="grid" data-theme="b">分类讨论区</a>
-        </div>
-        <div class="home-item">
-            <a href="{% url top10 %}" data-role="button" data-icon="start" data-theme="b">全站十大</a>
-        </div>
-        <div class="home-item">
-            <a href="{% url hot %}" data-role="button" data-icon="info" data-theme="b">各区热点</a>
+
+        <div class="home-item" data-role="collapsible" data-theme="b" data-content-theme="c">
+            <h3>分类讨论区</h3>
+            <ul data-role="listview" data-inset="true">
+                {% for s in board_manager %}
+                    <li>
+                        <a href="{% url section sid=forloop.counter0 %}" rel="external">{{ s }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
 
         <div class="home-item" data-role="collapsible" data-theme="b" data-content-theme="c">
@@ -35,6 +39,15 @@
                 {% endif %}
             </ul>
         </div>
+
+        <div class="home-item">
+            <a href="{% url top10 %}" data-role="button" data-icon="star" data-theme="b">全站十大</a>
+        </div>
+
+        <div class="home-item">
+            <a href="{% url hot %}" data-role="button" data-icon="info" data-theme="b">各区热点</a>
+        </div>
+
         <div class="home-item">
             <a href="{% url about %}" data-role="button" data-theme="b">关于</a>
         </div>

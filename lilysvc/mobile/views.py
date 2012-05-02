@@ -13,6 +13,7 @@ from django.views.generic.simple import direct_to_template
 
 from lilysvc.account import get_active_connection
 from lilysvc.lilybbs import Lily
+from lilysvc.lilybbs.models import BoardManager
 from lilysvc.lilybbs.error import *
 from lilysvc.mobile.forms import LoginForm, ComposeForm
 
@@ -26,12 +27,16 @@ def home(request):
             fav = None
     else:
         fav = None
-    return render_to_response('mobile/home.html', dict(favorites=fav), context_instance=RequestContext(request))
+    board_manager = BoardManager()
+    return render_to_response('mobile/home.html',
+            dict(favorites=fav, board_manager=board_manager),
+            context_instance=RequestContext(request))
 
-def boardlist(request):
+def section(request, sid):
     lily = Lily()
-    brd_mgr = lily.board_manager
-    return render_to_response('mobile/boardlist.html', dict(board_manager=brd_mgr))
+    sec = lily.board_manager[int(sid)]
+    return render_to_response('mobile/section.html',
+            dict(section_text=unicode(sec), board_list=sec.board_list))
 
 def board(request, board, start=None):
     return render_to_response('mobile/board.html', dict(board=board, start=start))

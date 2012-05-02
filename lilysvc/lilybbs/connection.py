@@ -111,7 +111,11 @@ class Connection:
         XXX: unicode
         '''
         params = {'board': board}
-        body = u'\n'.join(wrap(body, self.LINE_WIDTH))
+        lines = body.split(u'\r\n')
+        body = []
+        for i in lines:
+            body.append(u'\r\n'.join(wrap(i, self.LINE_WIDTH)))
+        body = u'\r\n'.join(body)
         data = {'title': title,
                 'text': body}
         if pid is not None:
