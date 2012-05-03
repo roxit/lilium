@@ -108,6 +108,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 AUTH_PROFILE_MODULE = 'account.LilyProfile'
+SESSION_COOKIE_AGE = 1814400
 
 # local/unpublic settings
 try:
