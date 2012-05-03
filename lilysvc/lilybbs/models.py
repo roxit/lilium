@@ -61,9 +61,11 @@ class Post:
         self.title = self.TITLE_RE.search(txt[1]).group(1)
         date_str = self.DATE_RE.search(txt[2]).group(1)
         self.date = datetime.strptime(date_str, self.DATE_FMT)
-        self.ip = self.IP_RE.search(txt[-1]).group(1)
+        try:
+            self.ip = self.IP_RE.search(txt[-1]).group(1)
+        except Exception:
+            self.ip = None      # archived posts have no IP.
         self.raw_body = txt[4:-2]
-        self.render()
     
     def render(self):
         if self.rendered_body is not None:
