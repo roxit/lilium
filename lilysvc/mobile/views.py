@@ -11,6 +11,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.generic.simple import direct_to_template
+import pylibmc
 
 from lilysvc.account import get_active_connection
 from lilysvc.lilybbs import Lily
@@ -18,14 +19,21 @@ from lilysvc.lilybbs.models import BoardManager
 from lilysvc.lilybbs.error import *
 from lilysvc.mobile.forms import LoginForm, ComposeForm
 
+mc = pylibmc.Client(['127.0.0.1'])
+
 def home(request):
     if request.user.is_authenticated():
+        c = mc.get('fav.{0}'.format(request.user.id))
         lily = Lily(request.user.get_profile().last_session)
-        try:
-            fav = lily.fetch_favorites()
-            fav = [(i, lily.board_manager.board_text(i)) for i in fav]
-        except Error:
-            fav = None
+        if c:
+            fav = [(i, lily.board_manager.board_text(i)) for i in c.split('|')]
+        else:
+            try:
+                fav = lily.fetch_favorites()
+                mc.set('fav.{0}'.format(request.user.id), '|'.join(fav), time=900)
+                fav = [(i, lily.board_manager.board_text(i)) for i in fav]
+            except Error:
+                fav = None
     else:
         fav = None
     board_manager = BoardManager()
