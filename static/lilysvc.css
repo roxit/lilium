@@ -17,7 +17,6 @@ body {
 
   padding: 0.6em 0 0.6em;
   text-align: center;
-  text-decoration: none;
   width: 100%;
 }
 
@@ -87,7 +86,6 @@ body {
 }
 
 #topicPage .topic-title {
-  font-size: 28px;
   font-weight: bold;
   margin: 0 16px 0 16px;
   padding: 15px;
