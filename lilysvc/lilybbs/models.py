@@ -57,15 +57,27 @@ class Post:
             txt = txt.replace(u'发信站', u'\n发信站', 1)
 
         txt = txt.splitlines()
-        self.author = self.AUTHOR_RE.search(txt[0]).group(1)
-        self.title = self.TITLE_RE.search(txt[1]).group(1)
-        date_str = self.DATE_RE.search(txt[2]).group(1)
-        self.date = datetime.strptime(date_str, self.DATE_FMT)
+        try:
+            self.author = self.AUTHOR_RE.search(txt[0]).group(1)
+        except AttributeError:
+            self.author = u'大师兄'
+        try:
+            self.title = self.TITLE_RE.search(txt[1]).group(1)
+        except AttributeError:
+            self.title = u'又出错了'
+        try:
+            date_str = self.DATE_RE.search(txt[2]).group(1)
+            self.date = datetime.strptime(date_str, self.DATE_FMT)
+        except AttributeError:
+            self.date = datetime.now()
         try:
             self.ip = self.IP_RE.search(txt[-1]).group(1)
         except Exception:
-            self.ip = None      # archived posts have no IP.
-        self.raw_body = txt[4:-2]
+            self.ip = '95.27.10.24'    # archived posts have no IP.
+        try:
+            self.raw_body = txt[4:-2]
+        except Exception:
+            self.raw_body = [u'Houston, we have a problem.']
     
     def render(self):
         if self.rendered_body is not None:
