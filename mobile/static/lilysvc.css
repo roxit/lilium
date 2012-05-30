@@ -1,0 +1,95 @@
+body {
+}
+
+.meta, .post-meta, header-meta {
+  display: none;
+}
+
+.pagination {
+  background: #999; /* for non-css3 browsers */
+  background: -moz-linear-gradient(top, rgba(30,87,153,1) 0%, rgba(125,185,232,0) 50%, rgba(125,185,232,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(30,87,153,1)), color-stop(50%,rgba(125,185,232,0)), color-stop(100%,rgba(125,185,232,1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(125,185,232,0) 50%,rgba(125,185,232,1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(125,185,232,0) 50%,rgba(125,185,232,1) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(125,185,232,0) 50%,rgba(125,185,232,1) 100%); /* IE10+ */
+  background: linear-gradient(top, rgba(30,87,153,1) 0%,rgba(125,185,232,0) 50%,rgba(125,185,232,1) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+
+  padding: 0.6em 0 0.6em;
+  text-align: center;
+  width: 100%;
+}
+
+.pagination:hover {
+  cursor: pointer
+}
+
+.home-item {
+}
+
+.header-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0.2em 0 0.2em;
+}
+
+.header-author {
+  color: blue;
+}
+
+.header-board {
+  color: dimgrey;
+}
+
+.header-count {
+  margin-left: 1.5em;
+}
+
+.header-date {
+  font-family: cursive;
+  margin-left: 1.5em;
+}
+
+.header-info {
+  color: dimgrey;
+  font-family: cursive;
+  font-size: 12px;
+}
+
+.post {
+}
+
+.post-author {
+  color: blue;
+}
+
+.post-body {
+  font-family: 楷体, "Times New Roman", Georgia, serif;
+  margin: 18px 0 0;
+}
+
+.post-body p {
+  font-size: 18px;
+  white-space: normal;
+}
+
+.post-date {
+  font-family: cursive;
+  font-size: 14px;
+  margin-left: 1.5em;
+}
+
+.post-info {
+  color: dimgrey;
+  font-family: cursive;
+  font-size: 18px;
+}
+
+#topicPage .topic-title {
+  font-weight: bold;
+  margin: 0 16px 0 16px;
+  padding: 15px;
+  text-align: center;
+  white-space: normal;
+}
+

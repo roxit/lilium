@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+发帖
+{% endblock %}
+
+{% block body %}
+<div data-role="page">
+    <div data-role="header">
+        <a href="{% url board board=board %}" data-icon="back" data-iconpos="notext">返回</a>
+        <h3>
+            {% if is_reply %}
+            Re: {{ post.title }}
+            {% else %}
+            {{ board }}
+            {% endif %}
+        </h3>
+    </div>
+
+    <div data-role="content">
+        <form action="{% url compose board=board %}" method="POST" data-ajax="false">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="发送" data-inline="true" data-theme="b"/>
+        </form>
+    </div>
+
+</div>
+{% endblock %}
+

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ board }}
+{% endblock %}
+
+{% block body %}
+<div data-role="page" id="boardPage">
+    <script>
+        r = {};
+
+        function extendList(resp) {
+            var page = resp;
+            $('#headerTmpl').tmpl(page.headerList).appendTo($("#headerList"));
+            $('time.timeago').timeago();
+            if (page.prevStart) {
+                r.prevStart = page.prevStart;
+                $("#moreButton").html("更多");
+            } else {
+                $("moreButton").hide();
+            }
+            $("#headerList").listview("refresh");
+            $.mobile.hidePageLoadingMsg();
+        };
+
+        function loadMore() {
+            $.mobile.showPageLoadingMsg();
+            $("#moreButton").html("载入中");
+            var url = "/api/board/"+r.board;
+            if (r.prevStart)
+                url += "/"+r.prevStart;
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                success: extendList,
+                error: function showError(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR, textStatus, errorThrown);
+                }
+            });
+        };
+
+        $("#moreButton").live("tap", loadMore);
+
+        $("#boardPage").live("pageinit", function () {
+            r.board = "{{ board }}";
+            $("#headerList").html("");
+            loadMore();
+        });
+    </script>
+
+    <script id="headerTmpl" type="text/x-jquery-tmpl">
+        <li class="ui-li ui-li-static ui-body-b">
+            <a href="/topic/${board}/${pid}" class="ui-link-inherit" rel="external">
+                <div class="header">
+                    <p class="header-title">${title}</p>
+                    <div class="header-info">
+                        <span class="header-author">${author}</span>
+                        <time class="header-date timeago" datetime="${date}"></time>
+                    </div>
+                    <span class="ui-li-count">${replyCount}</span>
+                </div>
+            </a>
+        </li>
+    </script>
+
+    <div data-role="header">
+        <a href="{% url home %}" data-icon="back" data-iconpos="notext">返回</a>
+        <h2>{{ board }}</h2>
+        <a href="{% url compose board=board %}"  data-icon="add" class="ui-btn-right">发帖</a>
+    </div>
+
+    <div data-role="content">
+        <ul data-role="listview" data-theme="b" id="headerList">
+        </ul>
+    </div>
+    <div id="moreButton" class="pagination">
+        更多
+    </div>
+
+</div>
+{% endblock %}
+

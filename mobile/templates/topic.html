@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}
+品味文章
+{% endblock %}
+
+{% block body %}
+<div data-role="page" id="topicPage">
+
+    <script>
+        var r = {};
+
+        function extendList(resp) {
+            /*
+            if (resp.error)
+            {
+                $.mobile.hidePageLoadingMsg();
+                $("#moreButton").html(resp.message);
+                return;
+            }
+            */
+            var topic = resp;
+            if (!r.nextStart) {
+                $("#title").html(topic.postList[0].title);
+            }
+
+            $('#postTmpl').tmpl(resp.postList).appendTo($("#postList"));
+            $('time.timeago').timeago();
+
+            if (topic.nextStart) {
+                r.nextStart = topic.nextStart;
+                $("#moreButton").html("更多");
+            } else {
+                $("#moreButton").hide();
+            }
+            $("#postList").listview("refresh");
+            $.mobile.hidePageLoadingMsg();
+        };
+
+        function loadMore() {
+            $.mobile.showPageLoadingMsg();
+            $("#moreButton").html("载入中");
+
+            var url = "/api/topic/"+r.board+"/"+r.pid;
+            if (r.nextStart)
+                url += "/"+r.nextStart;
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                success: extendList,
+                error: function showError() {
+
+                }
+            });
+        };
+
+        $("#moreButton").live("tap", loadMore);
+
+        $("#topicPage").live("pageinit", function (event) {
+            r.board = "{{ board }}";
+            r.pid = {{ pid }};
+            $("#postList").html("");
+            loadMore();
+        });
+
+        $('#composeButton').live('click', function (event) {
+            var board = $('.post:first .post-board').text();
+            var pid = $('.post:first .post-pid').text();
+            var num = $('.post:first .post-num').text();
+            var url = '/compose/'+board+'/?pid='+pid+'&num='+num;
+            $.mobile.changePage(url, {transition: 'pop'});
+        });
+    </script>
+
+    <script id="postTmpl" type="text/x-jquery-tmpl">
+        <li class="post ui-li ui-li-static ui-body-c">
+            <div class="post-meta">
+                <span class="post-board">${board}</span>
+                <span class="post-pid">${pid}</span>
+                <span class="post-num">${num}</span>
+            </div>
+            <div class="post-info">
+                <span class="post-author">${author}</span>
+                <time class="post-date timeago" datetime="${date}"></time>
+            </div>
+            <div class="post-body">
+                {% templatetag openbrace %}{% templatetag openbrace %}html body{% templatetag closebrace %}{% templatetag closebrace %}
+            </div>
+        </li>
+    </script>
+
+    <div data-role="header">
+        <a href="{% url board board=board %}" data-icon="back" data-iconpos="notext">返回</a>
+        <h2 id="title" class="topic-title"></h2>
+    </div>
+    <div data-role="content">
+        <ul data-role="listview" class="ui-listview" data-theme="b" id="postList">
+        </ul>
+    </div>
+    <div id="moreButton" class="pagination">
+        更多
+    </div>
+    <div data-role="footer" data-position="fixed">
+        <a id="composeButton" data-icon="add">回复</a>
+    </div>
+</div>
+{% endblock %}
+
