@@ -2,6 +2,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 
+
 class LoginForm(forms.Form):
 
     username = forms.CharField(label=u'帐号', min_length=2, max_length=12)
@@ -29,6 +30,7 @@ class LoginForm(forms.Form):
 
     def get_user(self):
         return self.user
+
 
 class ComposeForm(forms.Form):
 

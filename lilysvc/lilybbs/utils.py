@@ -1,20 +1,26 @@
 # -*- coding: utf-8 -*-
-import re
 from urlparse import urlparse, parse_qs
 
-class LilyError(Exception): pass
+
+class LilyError(Exception):
+    pass
+
 
 def pid2str(pid):
     return u'M.{0}.A'.format(pid)
-    
+
+
 def parse_href(s, k):
     return parse_qs(urlparse(s).query)[k][0]
 
+
 def parse_pid(s):
     return int(parse_href(s, 'file')[2:-2])
-    
+
+
 def parse_num(s):
     return int(parse_href(s, 'num'))
+
 
 def make_cookie(name, value, version=0,
         port=None, port_specified=False,
@@ -30,3 +36,4 @@ def make_cookie(name, value, version=0,
         path, path_specified,
         secure, expires, discard, comment, comment_url,
         rest, rfc2109)
+

@@ -1,6 +1,6 @@
 import logging
 from StringIO import StringIO
-from urllib2 import urlopen
+from urllib2 import urlopen, URLError
 
 from django.http import HttpResponse, Http404
 from PIL import Image
@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 mc = pylibmc.Client(['127.0.0.1'])
 
 DEFAULT_RESOLUTION = 400
+
 
 def fetch_image(request):
     url = request.GET.get('url', None)
@@ -41,16 +42,16 @@ def fetch_image(request):
     res = request.GET.get('res', DEFAULT_RESOLUTION)
     try:
         data = urlopen(url).read()
-    except URLError as e:
+    except URLError:
         raise Http404
 
     if ext != 'gif':
         img = Image.open(StringIO(data))
         if img.size[0] > res:
-            size = (res, int(res*1.0/img.size[0]*img.size[1]))
+            size = (res, int(res * 1.0 / img.size[0] * img.size[1]))
             img = img.resize(size, Image.ANTIALIAS)
             buf = StringIO()
-            img.save(buf, ext) 
+            img.save(buf, ext)
             data = buf.getvalue()
     mc.set(url, data, time=3600)
     return HttpResponse(data, mimetype='image/%s' % ext)

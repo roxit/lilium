@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class LilyProfile(models.Model):
     user = models.OneToOneField(User)
     display_name = models.CharField(max_length=12, null=True)

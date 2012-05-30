@@ -10,7 +10,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.views.generic.simple import direct_to_template
 import pylibmc
 
 from lilysvc.account import get_active_connection
@@ -20,6 +19,7 @@ from lilysvc.lilybbs.error import *
 from lilysvc.mobile.forms import LoginForm, ComposeForm
 
 mc = pylibmc.Client(['127.0.0.1'])
+
 
 def home(request):
     if request.user.is_authenticated():
@@ -41,33 +41,40 @@ def home(request):
             dict(favorites=fav, board_manager=board_manager),
             context_instance=RequestContext(request))
 
+
 def section(request, sid):
     lily = Lily()
     sec = lily.board_manager[int(sid)]
     return render_to_response('mobile/section.html',
             dict(section_text=unicode(sec), board_list=sec.board_list))
 
-def board(request, board, start=None):
-    return render_to_response('mobile/board.html', dict(board=board, start=start))
-
-def topic(request, board, pid):
-    return render_to_response('mobile/topic.html', dict(board=board, pid=pid))
-
-def top10(request):
-    lily = Lily()
-    page = lily.fetch_top10()
-    return render_to_response('mobile/top10.html', dict(page=page))
 
 def hot(request):
     lily = Lily()
     page = lily.fetch_hot()
     return render_to_response('mobile/hot.html', dict(page=page, board_manager=lily.board_manager))
 
+
+def top10(request):
+    lily = Lily()
+    page = lily.fetch_top10()
+    return render_to_response('mobile/top10.html', dict(page=page))
+
+
+def board(request, board):
+    return render_to_response('mobile/board.html', dict(board=board))
+
+
+def topic(request, board, pid):
+    return render_to_response('mobile/topic.html', dict(board=board, pid=pid))
+
+
 def build_response(result=None, exc=None):
     JSON_MIME = 'application/json'
     if exc:
         return HttpResponse(json.dumps(str(exc)), status=400, mimetype=JSON_MIME)
     return HttpResponse(json.dumps(result), mimetype=JSON_MIME)
+
 
 def api_board(request, board, start=None):
     lily = Lily()
@@ -77,41 +84,43 @@ def api_board(request, board, start=None):
         return build_response(exc=e)
     return build_response(page.json())
 
+
 def api_topic(request, board, pid, start=None):
     lily = Lily()
     try:
         topic = lily.fetch_topic(board, pid, start)
     except Exception as e:
-        raise
         return build_response(exc=e)
     return build_response(topic.json())
+
 
 def login(request):
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            store_password = form.cleaned_data.get('store_password', False)
-            redir = unquote(request.POST.get('next', settings.LOGIN_REDIRECT_URL))
+            redir = unquote(form.cleaned_data.get('next', settings.LOGIN_REDIRECT_URL))
             auth_login(request, form.get_user())
             return HttpResponseRedirect(redir)
         else:
-            redir = request.POST.get('next', settings.LOGIN_REDIRECT_URL)
+            # invalid, no cleaned_data
+            redir = unquote(request.POST.get('next', settings.LOGIN_REDIRECT_URL))
     else:
         form = LoginForm()
-        redir = request.GET.get('next', settings.LOGIN_REDIRECT_URL)
+        redir = unquote(request.GET.get('next', settings.LOGIN_REDIRECT_URL))
     form.fields['next'].widget.attrs['value'] = quote(redir)
     return render_to_response('mobile/login.html',
             dict(form=form),
             context_instance=RequestContext(request))
 
+
 def logout(request):
     auth_logout(request)
     return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
 
+
 def about(request):
     return render_to_response('mobile/about.html')
+
 
 @login_required
 def compose(request, board):
@@ -131,14 +140,14 @@ def compose(request, board):
             ret = lily.compose(board, title, body, pid, gid)
             if ret:
                 if pid is not None:
-                    return HttpResponseRedirect('/board/{0}/{1}'.format(board, pid))
+                    return HttpResponseRedirect('/topic/{0}/{1}'.format(board, pid))
                 else:
                     return HttpResponseRedirect('/board/{0}'.format(board))
             else:
                 # XXX
                 form._errors['__all__'] = u'发送失败'
     else:
-        params = request.GET;
+        params = request.GET
         pid = params.get('pid', None)
         num = params.get('num', None)
         form = ComposeForm()

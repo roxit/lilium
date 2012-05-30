@@ -113,6 +113,5 @@ SESSION_COOKIE_AGE = 1814400
 # local/unpublic settings
 try:
     from lilysvc.settings_local import *
-except ImportError as e:
+except ImportError:
     sys.stderr.write('WARNING: No local settings found.\n')
-

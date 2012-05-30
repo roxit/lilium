@@ -7,7 +7,7 @@ from datetime import datetime
 import re
 from textwrap import wrap
 import urllib2
-from urllib2 import urlopen, URLError
+from urllib2 import URLError
 from urllib import quote
 from urlparse import urlparse, parse_qs
 
@@ -16,6 +16,7 @@ from BeautifulSoup import BeautifulSoup
 from error import Error, NetworkError, ContentError
 from models import *
 from utils import pid2str, parse_href, parse_num, parse_pid
+
 
 class Connection:
 
@@ -43,7 +44,7 @@ class Connection:
                     args += ['{0}={1}'.format(k, i) for i in v]
                 else:
                     args.append('{0}={1}'.format(k, v))
-        url = self.base_url+action+('?' if args else '')+'&'.join(args)
+        url = self.base_url + action + ('?' if args else '') + '&'.join(args)
         logger.debug(url)
         body = []
         if data:
@@ -51,7 +52,7 @@ class Connection:
                 body.append('{0}={1}'.format(quote(k), quote(unicode(v).encode(self.ENCODING))))
         try:
             response = self._opener.open(url, '&'.join(body) if data else None)
-        except URLError as e:
+        except URLError:
             raise NetworkError()
         # decode() in py2.6 does not support `errors` kwarg.
         html = response.read().decode(self.ENCODING, 'ignore')
@@ -69,13 +70,11 @@ class Connection:
     def is_logged_in(self):
         html = self._do_action('bbsfoot')
         return html.find('bbsqry?userid=guest') == -1
-        
+
     def login(self, username, password):
         '''
         return Session if successful else None
         '''
-        # TODO: logout existing session
-
         from random import randint
         session = Session()
         session.vd = str(randint(10000, 100000))
@@ -91,10 +90,10 @@ class Connection:
             return None
 
         s = s.split('+')
-        session.key = str(int(s[-1])-2)
+        session.key = str(int(s[-1]) - 2)
         s = s[0].split('N')
         session.uid = s[-1]
-        session.num = str(int(s[0])+2)
+        session.num = str(int(s[0]) + 2)
         self.load_session(session)
         return session
 
@@ -102,7 +101,7 @@ class Connection:
         if session:
             self.load_session(session)
         data = {'Submit': u'注销登录'.encode(self.ENCODING)}
-        ret = self._do_action('bbslogout', '', data)
+        self._do_action('bbslogout', '', data)
         self._cj.clear()
         self.base_url = self.BBS_URL
 
@@ -163,7 +162,7 @@ class Connection:
             if i.text == u'本主题下30篇':
                 ret.next_start = int(parse_href(i['href'], 'start'))
         return ret
-    
+
     def fetch_page(self, board, start=None):
         params = {'board': board}
         if start:
@@ -179,13 +178,13 @@ class Connection:
             h = Header()
             h.board = board
             try:
-                h.num = int(cells[0].text)-1
+                h.num = int(cells[0].text) - 1
             except ValueError:
                 continue
             h.author = cells[2].text.strip()
             h.date = cells[3].text.strip()
             h.date = datetime.strptime(h.date, self.DATE_FORMAT)
-            h.date = h.date.replace(year = year)
+            h.date = h.date.replace(year=year)
             h.title = cells[4].text.strip()[2:]
             h.pid = parse_pid(cells[4].a['href'])
             tmp = cells[5].text.strip()
@@ -199,7 +198,7 @@ class Connection:
         # TODO
         for i in soup.body.center.findAll('a', recursive=False):
             if i.text == u'上一页':
-                ret.prev_start = int(parse_href(i['href'], 'start'))-1
+                ret.prev_start = int(parse_href(i['href'], 'start')) - 1
         return ret
 
     def fetch_top10(self):
@@ -261,7 +260,7 @@ class Connection:
             soup = BeautifulSoup(html)
             try:
                 text = re.search(ur'\[(\w+?)区\]<hr', html, re.UNICODE).group(1)
-            except AttributeError as e:
+            except AttributeError:
                 raise ContentError(u'请勿过快刷新页面')
             section = Section(i, text)
             items = soup.findAll('tr')[1:]
@@ -286,17 +285,3 @@ class Connection:
         with open('FaceList.json', 'w') as f:
             json.dump(ret, f)
 
-if __name__ == '__main__':
-    lily = Connection()
-#    lily.login(u'obash', u'changeme')
-#    lily.send_topic(u'test', u'信春哥&', u'无&bug')
-#    lily.fetch_post(1323838963, 'YanCheng', 7644)
-#    lily.fetch_topic(1322808044, 'Python')
-#    lily.fetch_topic(1326809504, 'YanCheng')
-#    lily.fetch_page('D_Computer')
-#    lily.fetch_top10()
-#    lily.fetch_board_list()
-    lily.fetch_face_list()
-    #lily.logout()
-#    print(lily.connection.is_logged_in())
-        

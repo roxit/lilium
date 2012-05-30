@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 DIR = os.path.dirname(__file__)
 
+
 class Post:
     AUTHOR_RE = re.compile(ur'发信人: (\w+?) \(')
     TITLE_RE = re.compile(ur'标  题: (.+?)$')
@@ -28,7 +29,6 @@ class Post:
         self.board = board
         self.pid = pid
         self.num = num
-        self._str = None
         if not self.FACE_LIST:
             with open(os.path.join(DIR, 'resources/face_list.json')) as f:
                 self.FACE_LIST = json.load(f)
@@ -52,8 +52,9 @@ class Post:
         }
 
     def parse_post(self, txt):
+        # TODO: what's the following 3 lines for?
         i = txt.find(u'发信站')
-        if txt[i-1] != u'\n':
+        if txt[i - 1] != u'\n':
             txt = txt.replace(u'发信站', u'\n发信站', 1)
 
         txt = txt.splitlines()
@@ -78,18 +79,18 @@ class Post:
             self.raw_body = txt[4:-2]
         except Exception:
             self.raw_body = [u'Houston, we have a problem.']
-    
+
     def render(self):
         if self.rendered_body is not None:
             return self.rendered_body
-        p = re.compile(ur'[-]+')
         body = []
         prev_len = 0
         for i in self.raw_body:
             i = i.rstrip()
             if len(i) == 0:
                 continue
-            if prev_len > self.LINE_CHARS and i[0] not in [u' ', u'-', u'~', u'*', u'※', u'【']:
+            if prev_len > self.LINE_CHARS and \
+                    i[0] not in [u' ', u'-', u'~', u'*', u'※', u'【']:
                 body[-1] += i
             else:
                 body.append(i)
@@ -113,13 +114,14 @@ class Post:
         self.rendered_body = self.render()
         return self.rendered_body
 
+
 class Topic:
     def __init__(self, board=None, pid=None):
         self.board = board
         self.pid = pid
         self.next_start = None
         self.post_list = []
-    
+
     def __unicode__(self):
         # t = filter(lambda x: not x[0].startswith('__'), inspect.getmembers(self))
         # return '\n'.join('{0}: {1}'.format(i[0], i[1]) for i in t)
@@ -133,6 +135,7 @@ class Topic:
                 'nextStart': self.next_start,
         }
 
+
 class Header:
     def __init__(self):
         self.author = None
@@ -143,7 +146,7 @@ class Header:
         self.reply_count = None
         self.title = None
         self.view_count = None
-        
+
     def json(self):
         return {
                 'author': self.author,
@@ -155,6 +158,7 @@ class Header:
                 'title': self.title,
                 'viewCount': self.view_count,
         }
+
 
 class Page:
     def __init__(self, board):
@@ -168,36 +172,7 @@ class Page:
                 'headerList': [i.json() for i in self.header_list],
                 'prevStart': self.prev_start,
         }
-    
-class Session:
 
-    @classmethod
-    def create(cls, session_str=None):
-        ret = cls()
-        try:
-            ret.loads(session_str)
-        except (AttributeError, ValueError):
-            logger.warning('Invalid session_str')
-            return None
-        return ret
-
-    def __str__(self):
-        return '<Session: vd=%s key=%s num=%s uid=%s>' % (self.vd, self.key, self.num, self.uid)
-
-    def __repr__(self):
-        return str(self)
-
-    def __init__(self):
-        self.vd = None
-        self.key = None
-        self.num = None
-        self.uid = None
-
-    def dumps(self):
-        return '|'.join([self.vd, self.key, self.num, self.uid])
-
-    def loads(self, s):
-        self.vd, self.key, self.num, self.uid = s.split('|')
 
 class Board:
     def __init__(self, name=None, text=None):
@@ -212,6 +187,7 @@ class Board:
 
     def __repr__(self):
         return '<Board: %s>' % str(self)
+
 
 class Section:
     def __init__(self, sid, text):
@@ -230,7 +206,8 @@ class Section:
 
     def __repr__(self):
         return '<Section: %s>' % str(self)
-        
+
+
 class BoardManager:
 
     _section_list = []
@@ -270,7 +247,18 @@ class BoardManager:
     def board_text(self, name):
         self.section_list
         return self.boards[name].text
-    
+
+    # xml
+    def dump_xml(self, filename):
+        root = Element('BoardManager')
+        for i in self.section_list:
+            sec = SubElement(root, 'Section', attrib={'sid': str(i.sid), 'text': i.text})
+            for j in i.board_list:
+                SubElement(sec, 'Board', attrib={'name': j.name, 'text': j.text})
+        with open(filename, 'w') as f:
+            f.write(tostring(root, encoding='UTF-8'))
+
+    # json
     class Encoder(json.JSONEncoder):
         def default(self, o):
             if not isinstance(o, BoardManager):
@@ -280,7 +268,7 @@ class BoardManager:
                      'text': i.text,
                      'board_list': [[j.name, j.text] for j in i.board_list]
                      } for i in o.section_list]
-    
+
     class Decoder(json.JSONDecoder):
         def decode(self, json_str):
             o = json.loads(json_str)
@@ -300,11 +288,34 @@ class BoardManager:
         with open(filename) as f:
             json.load(f, encoding='utf-8', cls=self.Decoder)
 
-    def toxml(self, filename):
-        root = Element('BoardManager')
-        for i in self.section_list:
-            sec = SubElement(root, 'Section', attrib={'sid': str(i.sid), 'text': i.text})
-            for j in i.board_list:
-                brd = SubElement(sec, 'Board', attrib={'name': j.name, 'text': j.text})
-        with open(filename, 'w') as f:
-            f.write(tostring(root, encoding='UTF-8'))
+
+class Session:
+
+    @classmethod
+    def create(cls, session_str=None):
+        ret = cls()
+        try:
+            ret.loads(session_str)
+        except (AttributeError, ValueError):
+            logger.warning('Invalid session_str')
+            return None
+        return ret
+
+    def __str__(self):
+        return '<Session: vd=%s key=%s num=%s uid=%s>' % (self.vd, self.key, self.num, self.uid)
+
+    def __repr__(self):
+        return str(self)
+
+    def __init__(self):
+        self.vd = None
+        self.key = None
+        self.num = None
+        self.uid = None
+
+    def dumps(self):
+        return '|'.join([self.vd, self.key, self.num, self.uid])
+
+    def loads(self, s):
+        self.vd, self.key, self.num, self.uid = s.split('|')
+

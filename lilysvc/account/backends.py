@@ -1,15 +1,16 @@
 import logging
 
 from django.db.models.signals import post_save
-from django.contrib.auth.models import User, check_password
+from django.contrib.auth.models import User
 import pylibmc
 
 from lilysvc.account.models import LilyProfile
 from lilysvc.lilybbs import Lily
-from lilysvc.lilybbs.models import Session
+
 
 logger = logging.getLogger(__name__)
 mc = pylibmc.Client(['127.0.0.1'])
+
 
 def create_profile(*args, **kwargs):
     if kwargs['created']:
@@ -18,7 +19,9 @@ def create_profile(*args, **kwargs):
         if created:
             logger.info('Created LilyProfile for {0}'.format(user))
 
+
 post_save.connect(create_profile, sender=User)
+
 
 def get_active_connection(username):
     try:
@@ -52,8 +55,9 @@ def get_active_connection(username):
         logger.debug('{0}: no saved password. Failure'.format(user))
         return None
 
+
 class LilyAuthBackend:
-    
+
     def authenticate(self, username=None, password=None, save_password=False):
         logger.debug('Authenticating {0}'.format(username))
         lily = Lily()
@@ -84,7 +88,7 @@ class LilyAuthBackend:
         try:
             ret = User.objects.get(id=user_id)
         except User.DoesNotExist:
-            logger.debug('User with id {0} does not exist. Failure'.format(user_id))
+            logger.error('User with id {0} does not exist. Failure'.format(user_id))
             return None
         lily = get_active_connection(ret.username)
         if lily:

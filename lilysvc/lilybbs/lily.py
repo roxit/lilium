@@ -5,6 +5,7 @@ logging.getLogger().setLevel(logging.DEBUG)
 from connection import Connection
 from models import BoardManager, Session
 
+
 class Lily:
 
     def __init__(self, session_str=None):
@@ -41,7 +42,7 @@ class Lily:
 
     def fetch_post(self, board, pid, num):
         ret = self.connection.fetch_post(board, pid, num)
-        return ret 
+        return ret
 
     def fetch_topic(self, board, pid, start=None):
         topic = self.connection.fetch_topic(board, pid, start)
@@ -61,7 +62,6 @@ class Lily:
 
     def fetch_hot(self):
         hot = self.connection.fetch_hot()
-        hot[0] = []
         return hot
 
     def fetch_favorites(self):
