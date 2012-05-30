@@ -20,7 +20,7 @@ class Post:
     IP_RE = re.compile(ur'\[FROM: (.+)\]')
 
     COLOR_RE = re.compile(ur'\x1b\[\d*(;\d+)?m')
-    IMG_RE = re.compile(ur'(http://(www\.)?[\w./-]+?\.(jpe?g|gif|png))')
+    IMG_RE = re.compile(ur'(http://(www\.)?[\w./-]+?\.(jpe?g|gif|png))', re.IGNORECASE)
     #URL_RE = re.compile(ur'http://(www\.)?[\w./-]+?$')
     LINE_CHARS = 39
     FACE_LIST = None

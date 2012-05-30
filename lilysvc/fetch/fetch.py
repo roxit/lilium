@@ -1,6 +1,8 @@
 import logging
 from StringIO import StringIO
+from urllib import unquote
 from urllib2 import urlopen, URLError
+from urlparse import urlparse
 
 from django.http import HttpResponse, Http404
 from PIL import Image
@@ -15,11 +17,12 @@ DEFAULT_RESOLUTION = 400
 
 def fetch_image(request):
     url = request.GET.get('url', None)
-    url = url.encode('utf-8')
+    url = unquote(url.encode('utf-8'))
     if not url:
         raise Http404
-    # TODO: recursive fetch
-    if not url.startswith('http://bbs.nju.edu.cn/'):
+
+    pr = urlparse(url)
+    if pr.netloc != 'bbs.nju.edu.cn' or pr.netloc == 'lilysvc.sinaapp.com':
         raise Http404
 
     def get_ext(url):
@@ -34,10 +37,10 @@ def fetch_image(request):
         raise Http404
     data = mc.get(url)
     if data:
-        logger.info('Cache hit: {0}'.format(url))
+        logger.debug('Cache hit: {0}'.format(url))
         return HttpResponse(data, mimetype='image/%s' % ext)
     else:
-        logger.info('Cache missed: {0}'.format(url))
+        logger.debug('Cache missed: {0}'.format(url))
 
     res = request.GET.get('res', DEFAULT_RESOLUTION)
     try:
