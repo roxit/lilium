@@ -1,0 +1,7 @@
+*.pyc
+*.swp
+*.log
+*~
+lilysvc.sql
+lilysvc/settings_local.py
+

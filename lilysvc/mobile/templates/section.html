@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}
+分类讨论区
+{% endblock %}
+{% block body %}
+<div data-role="page">
+    <div data-role="header">
+        <a href="{% url home %}" data-icon="back" data-iconpos="notext">返回</a>
+        <h2>{{ section_text }}</h2>
+    </div>
+
+    <div data-role="content">
+        <ul data-role="listview" data-theme="c">
+            {% for b in board_list %}
+            <li>
+                <a href="{% url board board=b.name %}" rel="external">
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">{{ b.text }}</div>
+                        <div class="ui-block-b">{{ b.name }}</div>
+                    </div>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
+

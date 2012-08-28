@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% with '/static/' as static %}
+    <link rel="shortcut icon" href="{{ static }}favicon.ico" >
+    <link rel="apple-touch-icon" href="{{ static }}logo.png" >
+
+    <link rel="stylesheet" href="{{ static }}jquery/jquery.mobile-1.1.0.min.css" />
+    <link rel="stylesheet" href="{{ static }}lilysvc.css" />
+
+    <script src="{{ static }}jquery/jquery-1.7.1.min.js"></script>
+    <script src="{{ static }}lilysvc.js"></script>
+    <script src="{{ static }}jquery/jquery.mobile-1.1.0.min.js"></script>
+    <script src="{{ static }}jquery/jquery.tmpl.js"></script>
+    <script src="{{ static }}jquery/jquery.timeago.js"></script>
+    <script src="{{ static }}jquery/jquery.timeago.zh-CN.js"></script>
+    {% endwith %}
+    <title>{% block title %}{% endblock %} - 爪机小百合</title>
+</head>
+
+<body>
+    {% block body %}
+    {% endblock %}
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-28996245-1']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+</body>
+</html>
+
