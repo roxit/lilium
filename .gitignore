@@ -1,0 +1,19 @@
+!.gitignore
+*~
+*.log
+**/logs/*
+
+.*.sw[a-z]
+
+# python
+*.py[cod]
+#*.egg
+#*.egg-info/
+dist/
+build/
+pip-log.txt
+.pydevproject
+
+archive/
+venv/
+
