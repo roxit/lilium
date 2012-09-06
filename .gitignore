@@ -15,6 +15,7 @@ build/
 pip-log.txt
 .pydevproject
 .ropeproject/
+_build/
 
 django-lilybbs/static/
 
