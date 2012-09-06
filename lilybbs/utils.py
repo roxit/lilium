@@ -1,39 +1,39 @@
-# -*- coding: utf-8 -*-
-from urlparse import urlparse, parse_qs
 
 
-class LilyError(Exception):
-    pass
+def is_zh(c):
+    # TODO
+    return any([u'\u4E00' <= c <= u'\u62FF',
+            u'\u6300' <= c <= u'\u77FF',
+            u'\u7800' <= c <= u'\u8CFF',
+            u'\u8D00' <= c <= u'\u9FCC',
+            u'\uFF00' <= c <= u'\uFFEF',
+            u'\u3001' <= c <= u'\u303F'])    # TODO
 
 
-def pid2str(pid):
-    return u'M.{0}.A'.format(pid)
+def len_zh(s):
+    ret = len(s)
+    for i in s:
+        if is_zh(i):
+            ret += 1
+    return ret
 
 
-def parse_href(s, k):
-    return parse_qs(urlparse(s).query)[k][0]
-
-
-def parse_pid(s):
-    return int(parse_href(s, 'file')[2:-2])
-
-
-def parse_num(s):
-    return int(parse_href(s, 'num'))
-
-
-def make_cookie(name, value, version=0,
-        port=None, port_specified=False,
-        domain=u'bbs.nju.edu.cn', domain_specified=False, domain_initial_dot=False,
-        path=u'', path_specified=False,
-        secure=False, expires=None, discard=True,
-        comment=None, comment_url=None,
-        rest={}, rfc2109=False):
-    from cookielib import Cookie
-    return Cookie(version, name, str(value),
-        port, port_specified,
-        domain, domain_specified, domain_initial_dot,
-        path, path_specified,
-        secure, expires, discard, comment, comment_url,
-        rest, rfc2109)
+def wrap_zh(s, maxc):
+    ret = []
+    while len_zh(s) > maxc:
+        i = 0
+        iz = 0
+        while iz < maxc:
+            if is_zh(s[i]):
+                iz += 2
+            else:
+                iz += 1
+            i += 1
+        # iz == maxc or iz == max+1,
+        # i <= len_zh(s)
+        ret.append(s[:i + 1])
+        s = s[i:]
+    if s:
+        ret.append(s)
+    return ret
 
