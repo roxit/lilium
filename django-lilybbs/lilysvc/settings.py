@@ -6,10 +6,10 @@ import sae.const
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DJANGO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Your Name', 'your_email@example.com'),
 )
 MANAGERS = ADMINS
 
@@ -44,7 +44,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.join(ROOT_DIR, 'static')
+STATIC_ROOT = os.path.join(DJANGO_ROOT, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".

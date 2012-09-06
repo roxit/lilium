@@ -8,8 +8,8 @@ Session.vim
 
 # python
 *.py[cod]
-#*.egg
-#*.egg-info/
+*.egg
+*.egg-info/
 dist/
 build/
 pip-log.txt

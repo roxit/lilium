@@ -1,0 +1,3 @@
+recursive-include lilybbs *.json
+recursive-include lilybbs *.xml
+
