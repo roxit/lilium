@@ -35,9 +35,11 @@ class Connection:
                 self.base_url,
                 action,
                 '?' if params else '',      # no prefixing '/'
-                params)
+                params or '')       # str(None) == 'None'
         logger.debug(url)
-        body = encode_params(body, self.ENCODING)
+        # body should be None instead of ''
+        # otherwise fetch_emoticon may not work
+        body = encode_params(body, self.ENCODING) or None
 
         try:
             resp = self.opener.open(url, body)
@@ -70,15 +72,11 @@ def quote(x, encoding):
 
 
 def encode_params(params, enc):
-    '''
-    returns ''
-    '''
     ret = []
     for k, v in params.items():
         if isinstance(v, list):
             ret += ['{0}={1}'.format(quote(k, enc), quote(i, enc)) for i in v]
         else:
             ret.append('{0}={1}'.format(quote(k, enc), quote(v, enc)))
-    # returns None if params is empty, otherwise fetch_emoticon raises HTTP405
-    return '&'.join(ret) if ret else None
+    return '&'.join(ret) if ret else ''
 

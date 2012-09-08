@@ -36,7 +36,7 @@ class Post:
         t = filter(lambda x: not x[0].startswith('__'), inspect.getmembers(self))
         return '\n'.join('{0}: {1}'.format(i[0], i[1]) for i in t)
 
-    def json(self):
+    def to_json(self):
         return {
                 'author': self.author,
                 'board': self.board,
@@ -121,18 +121,20 @@ class Topic:
         self.pid = pid
         self.idx = idx
         self.posts = []
+        self.next_idx = None
+        self.prev_idx = None
 
     def __unicode__(self):
-        # t = filter(lambda x: not x[0].startswith('__'), inspect.getmembers(self))
-        # return '\n'.join('{0}: {1}'.format(i[0], i[1]) for i in t)
         return '[%s]%d' % (self.board, self.pid)
 
-    def json(self):
+    def to_json(self):
         return {
                 'board': self.board,
+                'idx': self.idx,
+                'nextIdx': self.next_idx,
                 'pid': self.pid,
-                'postList': [i.json() for i in self.post_list],
-                'nextStart': self.next_start,
+                'posts': [i.to_json() for i in self.posts],
+                #'prevIdx': self.prev_idx,
         }
 
 
@@ -156,11 +158,11 @@ class Header:
     def __repr__(self):
         return '<Header: {0} >'.format(self)
 
-    def json(self):
+    def to_json(self):
         return {
                 'author': self.author,
                 'board': self.board,
-                'date': self.date.isoformat(),
+                'date': self.date.isoformat() if self.date else None,
                 'num': self.num,
                 'pid': self.pid,
                 'replyCount': self.reply_count,
@@ -176,14 +178,14 @@ class Page:
     def __init__(self, board):
         self.board = board
         self.prev_idx = None
-        self.next_idx = None
+        #self.next_idx = None
         self.headers = []
 
-    def json(self):
+    def to_json(self):
         return {
                 'board': self.board,
-                'headers': [i.json() for i in self.headers],
-                'nextIdx': self.next_idx,
+                'headers': [i.to_json() for i in self.headers],
+                #'nextIdx': self.next_idx,
                 'prevIdx': self.prev_idx,
         }
 
@@ -280,6 +282,13 @@ class Session:
         self.uid = None
         self.username = None
         self.password = None
+
+    def to_json(self):
+        return {'vd': self.vd,
+                'key': self.key,
+                'num': self.num,
+                'uid': self.uid,
+        }
 
     def dumps(self):
         return ','.join([self.vd, self.key, self.num, self.uid])

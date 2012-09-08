@@ -14,7 +14,7 @@ class FetchPageAction(BaseAction):
     def __init__(self, client, board, idx=None):
         super(FetchPageAction, self).__init__(client)
         self.board = board
-        self.idx = idx
+        self.idx = int(idx) if idx else None
 
     def setup(self):
         self.params = {'board': self.board}

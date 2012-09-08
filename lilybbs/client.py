@@ -28,45 +28,45 @@ class Client:
             self.conn.load_session(session)
         self.session = session
 
-    def is_logged_in(self):
-        return IsLoggedInAction.run(client)
+    def is_logged_in(self, **kwargs):
+        return IsLoggedInAction.run(self)
 
-    def login(self, username, password):
-        LogInAction.run(client, username, password)
+    def login(self, username, password, **kwargs):
+        return LogInAction.run(self, username, password)
 
-    def logout(self):
-        LogOutAction.run(client)
+    def logout(self, **kwargs):
+        return LogOutAction.run(self)
 
-    def compose(self, board, title, body, pid=None, gid=None):
+    def compose(self, board, title, body, pid=None, gid=None, **kwargs):
         '''
         title can have as many as 49 ascii chars,
         which is 24.5 chinese chars
         '''
         return ComposeAction.run(self, board, title, body, pid, gid)
 
-    def fetch_post(self, board, pid, num):
+    def fetch_post(self, board, pid, num, **kwargs):
         return FetchPostAction.run(self, board, pid, num)
 
-    def fetch_topic(self, board, pid, idx=None):
+    def fetch_topic(self, board, pid, idx=None, **kwargs):
         return FetchTopicAction.run(self, board, pid, idx)
 
-    def fetch_page(self, board, idx=None):
-        return FetchPageAction.run(client, board, idx)
+    def fetch_page(self, board, idx=None, **kwargs):
+        return FetchPageAction.run(self, board, idx)
 
-    def fetch_top10(self):
+    def fetch_top(self, **kwargs):
         return FetchTopAction.run(self)
 
-    def fetch_hot(self):
+    def fetch_hot(self, **kwargs):
         return FetchHotAction.run(self)
 
-    def fetch_subscription(self):
+    def fetch_subscription(self, **kwargs):
         return FetchSubscriptionAction.run(self)
 
-    def fetch_all_board(self):
+    def fetch_all_board(self, **kwargs):
         bm = FetchBoardManagerAction.run(self)
         bm.dump_xml()
 
-    def fetch_emoticon(self):
+    def fetch_emoticon(self, **kwargs):
         ret = FetchEmoticonAction.run(self)
         fn = os.path.join(ROOT_DIR, 'assets/emoticon.json')
         with open(fn, 'w') as f:
@@ -75,7 +75,7 @@ class Client:
 
 if __name__ == '__main__':
     client = Client()
-    #ret = client.fetch_top10()
+    #ret = client.fetch_top()
     #ret = client.fetch_hot()
     #client.fetch_all_board()
     #client.fetch_emoticon()

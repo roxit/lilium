@@ -7,7 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     (r'^fetch/', 'fetch.fetch'),
-    (r'^', include('mobile.urls')),
+    (r'^api/', include('api.urls')),
 )
 
 

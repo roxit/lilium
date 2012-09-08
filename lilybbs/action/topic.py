@@ -11,7 +11,7 @@ class FetchTopicAction(BaseAction):
         super(FetchTopicAction, self).__init__(client)
         self.board = board
         self.pid = pid
-        self.idx = idx
+        self.idx = int(idx) if idx else None
 
     def setup(self):
         self.params = {'board': self.board, 'file': self.pid2str(self.pid)}
@@ -23,7 +23,7 @@ class FetchTopicAction(BaseAction):
         ret = Topic(self.board, self.pid)
         items = self.soup.findAll('table', {'class': 'main'})
         if not items:
-            raise ContentError
+            raise ContentError()
         for i in items:
             c = i.tr.td.a['href']
             p = Post(self.board, self.parse_pid(c), self.parse_num(c))
@@ -32,10 +32,12 @@ class FetchTopicAction(BaseAction):
             ret.posts.append(p)
         for i in self.soup.body.center.findAll('a', recursive=False, limit=3):
             if i.text == u'本主题下30篇':
-                ret.next_start = int(self.parse_href(i['href'], 'start'))
+                ret.next_idx = int(self.parse_href(i['href'], 'start'))
 
         # remove topic head
         if self.idx:
+            ret.idx = self.idx
+            ret.prev_idx = self.idx - 30 or None
             ret.posts = ret.posts[1:]
         return ret
 

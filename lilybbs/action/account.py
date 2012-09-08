@@ -3,7 +3,7 @@ from random import randint
 import re
 
 from lilybbs.action.base import BaseAction
-from lilybbs.exc import InvalidLogin
+from lilybbs.exc import InvalidLogin, NotLoggedIn
 from lilybbs.models import Session
 
 
@@ -37,8 +37,21 @@ class LogInAction(BaseAction):
         s = s[0].split('N')
         self.session.uid = s[-1]
         self.session.num = str(int(s[0]) + 2)
-
         self.client.load_session(self.session)
+        return self.session
+
+
+class LogOutAction(BaseAction):
+    ACTION = 'bbslogout'
+
+    def setup(self):
+        self.params = {}
+        self.body = {'Submit': u'注销登录'}
+
+    def parse(self):
+        # TODO: do something
+        self.client.conn.cj.clear()
+        return True
 
 
 class IsLoggedInAction(BaseAction):
@@ -46,4 +59,17 @@ class IsLoggedInAction(BaseAction):
 
     def parse(self):
         return 'bbsqry?userid=guest' not in self.html
+
+
+class FetchSubscriptionAction(BaseAction):
+    ACTION = 'bbsleft'
+
+    def parse(self):
+        div = self.soup.findAll('div', {'id': 'div0'})
+        if not div:
+            raise NotLoggedIn()
+        items = div[0]
+        items = items.findAll('a')[:-1]
+        ret = [i.text for i in items]
+        return ret
 

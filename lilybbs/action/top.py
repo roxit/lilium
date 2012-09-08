@@ -8,7 +8,7 @@ class FetchTopAction(BaseAction):
 
     def parse(self):
         items = self.soup.findAll('tr')[1:]
-        ret = Page(u'全站十大')
+        ret = []
         for i in items:
             cells = i.findAll('td')
             h = Header()
@@ -17,6 +17,6 @@ class FetchTopAction(BaseAction):
             h.pid = self.parse_pid(cells[2].a['href'])
             h.author = cells[3].text.strip()
             h.reply_count = int(cells[4].text.strip())
-            ret.header_list.append(h)
+            ret.append(h)
         return ret
 
