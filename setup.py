@@ -9,7 +9,7 @@ setup(
     author_email = 'shishanshi@gmail.com',
     url = 'https://github.com/superock/lilium',
 
-    packages = ['lilybbs'],
+    packages = find_packages(),
     include_package_data = True,
     install_requires = ['BeautifulSoup']
 )

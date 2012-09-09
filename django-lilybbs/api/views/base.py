@@ -38,8 +38,7 @@ class BaseView(View):
                     status=ERROR_STATUS_CODE,
                     mimetype=JSON_MIME)
 
-        data = {'success': True,
-                'data': self.to_json(ret)}
+        data = self.to_json(ret)
         return HttpResponse(json.dumps(data),
                 mimetype=JSON_MIME)
 
