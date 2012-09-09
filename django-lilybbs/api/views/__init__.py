@@ -1,4 +1,4 @@
-from api.views.account import LogInView, LogOutView, IsLoggedInView
+from api.views.account import LogInView, LogOutView, CheckSessionView
 from api.views.account import SubscriptionView
 from api.views.hot import HotView
 from api.views.page import PageView

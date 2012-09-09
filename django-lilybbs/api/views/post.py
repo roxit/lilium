@@ -6,8 +6,10 @@ class PostView(SessionView):
     POST_ACTION = 'compose'
 
     def to_json(self, data):
-        import pdb; pdb.set_trace()
         if self.request.method == 'POST':
             return data
         return data.to_json()
+
+    def get(self, request, *args, **kwargs):
+        return BaseView.get(self, request, *args, **kwargs)
 

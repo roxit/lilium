@@ -54,13 +54,11 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -127,19 +125,19 @@ LOGGING = {
 }
 
 
-TEMPLATE_STRING_IF_INVALID = 'TEMPLATE_STRING_IF_INVALID'
+#TEMPLATE_STRING_IF_INVALID = 'TEMPLATE_STRING_IF_INVALID'
+#
+#LOGIN_URL = '/login/'
+#LOGIN_REDIRECT_URL = '/'
+#LOGOUT_URL = '/logout/'
+#
+#AUTHENTICATION_BACKENDS = (
+#    'account.backends.LilyAuthBackend',
+#    'django.contrib.auth.backends.ModelBackend',
+#)
 
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_URL = '/logout/'
-
-AUTHENTICATION_BACKENDS = (
-    'account.backends.LilyAuthBackend',
-    'django.contrib.auth.backends.ModelBackend',
-)
-
-AUTH_PROFILE_MODULE = 'account.LilyProfile'
-SESSION_COOKIE_AGE = 1814400
+#AUTH_PROFILE_MODULE = 'account.LilyProfile'
+#SESSION_COOKIE_AGE = 1814400
 
 
 # local/private settings

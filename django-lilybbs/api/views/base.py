@@ -1,4 +1,5 @@
 import json
+import urllib
 
 from django.http import HttpResponse
 from django.views.generic import View
@@ -45,9 +46,9 @@ class BaseView(View):
     def get_params(self):
         ret = {}
         for k, v in self.request.GET.items():
-            ret[k] = v
+            ret[k] = urllib.unquote(v)
         for k, v in self.request.POST.items():
-            ret[k] = v
+            ret[k] = urllib.unquote(v)
         return ret
 
     def get(self, request, *args, **kwargs):
@@ -64,7 +65,7 @@ class BaseView(View):
             return self.get_json_response(None, exc)
 
     def post(self, request, *args, **kwargs):
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         meth = getattr(self.client, self.POST_ACTION, None)
         if not meth:
             raise ValueError('POST_ACTION must be set')
@@ -86,11 +87,12 @@ class SessionView(BaseView):
     GET_ACTION = None
 
     def get_session(self):
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         self.session = self.request.GET.get('session', None) \
                 or self.request.POST.get('session', None)
         if not self.session:
             return self.get_json_response(None, NotLoggedIn())
+        self.session = urllib.unquote(self.session)
         self.client.load_session(self.session)
 
     def get(self, request, *args, **kwargs):

@@ -53,7 +53,7 @@ class ReadOnlyTestCase(unittest.TestCase):
 
     def test_fetch_post(self):
         brd = 'D_Computer'
-        pid = 1346910579
+        pid = '1346910579'
         num = 10443
         ret = self.client.fetch_post(brd, pid, num)
         self.assertIsInstance(ret, Post)
@@ -99,7 +99,6 @@ class SessionTestCase(unittest.TestCase):
         title = u'我们的目标是没有蛀牙！' * 3
         body = u'鼠辈，竟敢伤我！' * 7
         body += u'\r\nhttp://bbs.nju.edu.cn/file/R/rox/snow_heart.gif'
-        import pdb; pdb.set_trace()
         ret = self.client.compose(brd, title, body)
         self.assertTrue(ret)
 

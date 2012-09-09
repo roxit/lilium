@@ -14,10 +14,12 @@ class LogOutView(SessionView):
     POST_ACTION = 'logout'
 
 
-class IsLoggedInView(SessionView):
-    GET_ACTION = 'is_logged_in'
+class CheckSessionView(SessionView):
+
+    GET_ACTION = 'check_session'
 
 
 class SubscriptionView(SessionView):
+
     GET_ACTION = 'fetch_subscription'
 
