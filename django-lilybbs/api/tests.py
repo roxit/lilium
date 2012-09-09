@@ -6,7 +6,7 @@ from django.test import TestCase
 from django.test.client import Client
 
 
-class ReadOnlyTestCase(TestCase):
+class ReadOnlyTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -56,7 +56,7 @@ class ReadOnlyTestCase(TestCase):
         self.assertIsInstance(ret['posts'], list)
 
 
-class SessionTestCase(TestCase):
+class SessionTest(TestCase):
 
     @classmethod
     def setUpClass(cls):

@@ -5,7 +5,7 @@ from lilybbs import Client
 from lilybbs.models import *
 
 
-class LogInOutTestCase(unittest.TestCase):
+class LogInOutTest(unittest.TestCase):
 
     def test(self):
         self.client = Client()
@@ -18,7 +18,7 @@ class LogInOutTestCase(unittest.TestCase):
         self.assertFalse(self.client.check_session())
 
 
-class ReadOnlyTestCase(unittest.TestCase):
+class ReadOnlyTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -78,7 +78,7 @@ class ReadOnlyTestCase(unittest.TestCase):
         self.assertIsInstance(ret, Topic)
 
 
-class SessionTestCase(unittest.TestCase):
+class SessionTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

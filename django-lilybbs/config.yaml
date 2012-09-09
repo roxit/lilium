@@ -1,5 +1,5 @@
 name: lilysvc
-version: 1
+version: 3
 
 libraries:
 - name: django
