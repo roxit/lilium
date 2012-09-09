@@ -28,8 +28,8 @@ class Client:
             self.conn.load_session(session)
         self.session = session
 
-    def is_logged_in(self, **kwargs):
-        return IsLoggedInAction.run(self)
+    def check_session(self, **kwargs):
+        return CheckSessionAction.run(self)
 
     def login(self, username, password, **kwargs):
         return LogInAction.run(self, username, password)
@@ -75,23 +75,6 @@ class Client:
 
 if __name__ == '__main__':
     client = Client()
-    #ret = client.fetch_top()
-    #ret = client.fetch_hot()
     #client.fetch_all_board()
     #client.fetch_emoticon()
-
-    #client.login('obash', 'changeme')
-    #print client.is_logged_in()
-    #ret = client.fetch_subscription()
-    #client.logout()
-    #print client.is_logged_in()
-    #client.compose('test', u'鼠辈，竟敢伤我' * 7, '0123456789' * 10)
-    #ret = client.fetch_page('D_Computer')
-    #print ret.headers
-    #ret = client.fetch_page('D_Computer', ret.prev_idx)
-    #print ret.headers
-    #ret = client.fetch_post('Pictures', 1346856094, 18428)
-    import pdb
-    pdb.set_trace()
-    ret = client.fetch_topic('Pictures', 1346856094)
 

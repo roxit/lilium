@@ -49,12 +49,11 @@ class LogOutAction(BaseAction):
         self.body = {'Submit': u'注销登录'}
 
     def parse(self):
-        # TODO: do something
         self.client.conn.cj.clear()
-        return True
+        return u'错误! 你没有登录! ' not in self.html
 
 
-class IsLoggedInAction(BaseAction):
+class CheckSessionAction(BaseAction):
     ACTION = 'bbsfoot'
 
     def parse(self):
