@@ -42,15 +42,22 @@ class Client:
         title can have as many as 49 ascii chars,
         which is 24.5 chinese chars
         '''
+        pid = int(pid) if pid else None
+        gid = int(pid) if gid else None
         return ComposeAction.run(self, board, title, body, pid, gid)
 
     def fetch_post(self, board, pid, num, **kwargs):
+        pid = int(pid)
+        num = int(num)
         return FetchPostAction.run(self, board, pid, num)
 
     def fetch_topic(self, board, pid, idx=None, **kwargs):
+        pid = int(pid)
+        idx = int(idx) if idx else None
         return FetchTopicAction.run(self, board, pid, idx)
 
     def fetch_page(self, board, idx=None, **kwargs):
+        idx = int(idx) if idx else None
         return FetchPageAction.run(self, board, idx)
 
     def fetch_top(self, **kwargs):

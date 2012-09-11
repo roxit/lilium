@@ -12,4 +12,3 @@ class PostView(SessionView):
 
     def get(self, request, *args, **kwargs):
         return BaseView.get(self, request, *args, **kwargs)
-

@@ -130,7 +130,7 @@ class Topic:
     def to_json(self):
         return {
                 'board': self.board,
-                'idx': self.idx,
+                #'idx': self.idx,
                 'nextIdx': self.next_idx,
                 'pid': self.pid,
                 'posts': [i.to_json() for i in self.posts],
