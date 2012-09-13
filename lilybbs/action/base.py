@@ -9,13 +9,13 @@ class BaseAction(object):
 
     def setup(self):
         self.params = {}
-        self.body = {}
+        self.payload = {}
 
     def fetch(self):
         self.html = self.client.conn.send(
                 self.ACTION,
                 self.params,
-                self.body)
+                self.payload)
         self.html = self.html.replace(u'<nobr>', u'')
         self.soup = BeautifulSoup(self.html)
 
@@ -44,4 +44,3 @@ class BaseAction(object):
     @staticmethod
     def parse_num(s):
         return int(BaseAction.parse_href(s, 'num'))
-

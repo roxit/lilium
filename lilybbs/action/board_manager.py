@@ -16,7 +16,7 @@ class FetchBoardManagerAction(BaseAction):
 
     def setup(self):
         self.params = {'sec': self.sec}
-        self.body = {}
+        self.payload = {}
 
     def parse(self):
         try:

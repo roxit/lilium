@@ -17,7 +17,7 @@ class FetchTopicAction(BaseAction):
         self.params = {'board': self.board, 'file': self.pid2str(self.pid)}
         if self.idx:
             self.params['start'] = self.idx
-        self.body = {}
+        self.payload = {}
 
     def parse(self):
         ret = Topic(self.board, self.pid)

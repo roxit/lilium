@@ -29,7 +29,7 @@ class Connection:
         self.cj.set_cookie(make_cookie('_U_UID', session.uid))
         self.cj.set_cookie(make_cookie('_U_NUM', session.num))
 
-    def send(self, action, params=None, body=None):
+    def send(self, action, params=None, payload=None):
         params = encode_params(params, self.ENCODING)
         url = '{0}/{1}{2}{3}'.format(
                 self.base_url,
@@ -37,12 +37,12 @@ class Connection:
                 '?' if params else '',      # no prefixing '/'
                 params or '')       # str(None) == 'None'
         logger.debug(url)
-        # body should be None instead of ''
+        # payload should be None instead of ''
         # otherwise fetch_emoticon may not work
-        body = encode_params(body, self.ENCODING) or None
+        payload = encode_params(payload, self.ENCODING) or None
 
         try:
-            resp = self.opener.open(url, body)
+            resp = self.opener.open(url, payload)
         except URLError:
             raise NetworkError()
         # decode() in py2.6 does not support `errors` kwarg.

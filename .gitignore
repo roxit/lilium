@@ -20,5 +20,6 @@ _build/
 django-lilybbs/static/
 
 archive/
+scripts/
 venv/
 

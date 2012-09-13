@@ -2,7 +2,7 @@
 from urlparse import urlparse, parse_qs
 
 from lilybbs.action.base import BaseAction
-from lilybbs.exc import NotLoggedIn
+from lilybbs.exc import FrequencyLimitExceeded, NotLoggedIn
 from lilybbs.models import Post
 from lilybbs.utils import wrap_zh
 
@@ -20,7 +20,7 @@ class FetchPostAction(BaseAction):
         self.params = {'board': self.board,
                 'file': self.pid2str(self.pid),
                 'num': self.num}
-        self.body = {}
+        self.payload= {}
 
     def parse(self):
         txt = self.soup.find('textarea').text
@@ -51,19 +51,22 @@ class ComposeAction(BaseAction):
 
     def setup(self):
         self.params = {'board': self.board}
-        lines = self.body.split(u'\r\n')
+        self.body = self.body.replace(u'\r\n', u'\n')
+        self.body = self.body.replace(u'\r', u'\n')
+        lines = self.body.split(u'\n')
         body = []
         for l in lines:
             body.append(u'\r\n'.join(wrap_zh(l, self.MAXC)))
-        self.body = {'title': self.title, 'text': '\r\n'.join(body)}
+        self.payload = {'title': self.title, 'text': '\r\n'.join(body)}
         if self.pid:
-            self.body['reid'] = self.pid
-            self.body['pid'] = self.gid
+            self.payload['reid'] = self.pid
+            self.payload['pid'] = self.gid
 
     def parse(self):
         if 'Refresh' in self.html:
             return True
         else:
-            # TODO
-            raise NotLoggedIn()
+            if u'两次发文间隔过密' in self.soup.text:
+                raise FrequencyLimitExceeded()
+            raise NotLoggedIn(self.soup.text)
 

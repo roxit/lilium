@@ -24,7 +24,7 @@ class LogInAction(BaseAction):
                 self.client.conn.BBS_URL, self.session.vd)
 
         self.params = {'type': 2}
-        self.body = {'id': self.username,
+        self.payload = {'id': self.username,
                 'pw': self.password}
 
     def parse(self):
@@ -46,7 +46,7 @@ class LogOutAction(BaseAction):
 
     def setup(self):
         self.params = {}
-        self.body = {'Submit': u'注销登录'}
+        self.payload = {'Submit': u'注销登录'}
 
     def parse(self):
         self.client.conn.cj.clear()

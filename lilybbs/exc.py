@@ -15,11 +15,11 @@ class ContentError(LilyError):
         super(ContentError, self).__init__(message or self.DEFAULT_MESSAGE)
 
 
-class NetworkError(LilyError):
-    DEFAULT_MESSAGE = u'网络抽风了'.encode('utf-8')
+class FrequencyLimitExceeded(LilyError):
+    DEFAULT_MESSAGE = u'手快了'.encode('utf-8')
 
     def __init__(self, message=None):
-        super(NetworkError, self).__init__(message or self.DEFAULT_MESSAGE)
+        super(FrequencyLimitExceeded, self).__init__(message or self.DEFAULT_MESSAGE)
 
 
 class InvalidLogin(LilyError):
@@ -27,6 +27,13 @@ class InvalidLogin(LilyError):
 
     def __init__(self, message=None):
         super(InvalidLogin, self).__init__(message or self.DEFAULT_MESSAGE)
+
+
+class NetworkError(LilyError):
+    DEFAULT_MESSAGE = u'网络抽风了'.encode('utf-8')
+
+    def __init__(self, message=None):
+        super(NetworkError, self).__init__(message or self.DEFAULT_MESSAGE)
 
 
 class NotLoggedIn(LilyError):

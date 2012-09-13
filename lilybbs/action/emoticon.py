@@ -6,7 +6,7 @@ class FetchEmoticonAction(BaseAction):
 
     def setup(self):
         self.params = {'ptext': 'text'}
-        self.body = {}
+        self.payload = {}
 
     def parse(self):
         items = self.soup.findAll('img')

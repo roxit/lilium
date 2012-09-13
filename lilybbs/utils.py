@@ -21,6 +21,7 @@ def len_zh(s):
 def wrap_zh(s, maxc):
     ret = []
     while len_zh(s) > maxc:
+        # len_zh(s) is at least maxc+1
         i = 0
         iz = 0
         while iz < maxc:
@@ -30,8 +31,9 @@ def wrap_zh(s, maxc):
                 iz += 1
             i += 1
         # iz == maxc or iz == max+1,
-        # i <= len_zh(s)
-        ret.append(s[:i + 1])
+        # i might be greater than len(s),
+        # but it's okay for slicing
+        ret.append(s[:i])
         s = s[i:]
     if s:
         ret.append(s)

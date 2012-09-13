@@ -20,7 +20,7 @@ class FetchPageAction(BaseAction):
         self.params = {'board': self.board}
         if self.idx:
             self.params['start'] = self.idx
-        self.body = {}
+        self.payload = {}
 
     def parse(self):
         items = self.soup.findAll('tr')[1:]
