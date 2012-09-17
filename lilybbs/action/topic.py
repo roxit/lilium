@@ -24,11 +24,14 @@ class FetchTopicAction(BaseAction):
         items = self.soup.findAll('table', {'class': 'main'})
         if not items:
             raise ContentError()
+        idx = 0 if not self.idx else self.idx
         for i in items:
             c = i.tr.td.a['href']
             p = Post(self.board, self.parse_pid(c), self.parse_num(c))
             c = i.findAll('tr')[1].td.textarea.text
             p.parse_post(c)
+            p.idx = idx
+            idx += 1
             ret.posts.append(p)
         for i in self.soup.body.center.findAll('a', recursive=False, limit=3):
             if i.text == u'本主题下30篇':
@@ -40,4 +43,3 @@ class FetchTopicAction(BaseAction):
             ret.prev_idx = self.idx - 30 or None
             ret.posts = ret.posts[1:]
         return ret
-

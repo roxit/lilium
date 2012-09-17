@@ -32,6 +32,8 @@ class Post:
         self.pid = pid
         self.num = num
 
+        self.idx = 0
+
     def __str__(self):
         t = filter(lambda x: not x[0].startswith('__'), inspect.getmembers(self))
         return '\n'.join('{0}: {1}'.format(i[0], i[1]) for i in t)
@@ -42,6 +44,7 @@ class Post:
                 'board': self.board,
                 'body': self.body,
                 'date': self.date.isoformat(),
+                'idx': self.idx,
                 'ip': self.ip,
                 'num': self.num,
                 'pid': self.pid,
@@ -109,7 +112,7 @@ class Post:
         i = txt.find(u'发信站')
         if txt[i - 1] != u'\n':
             txt = txt.replace(u'发信站', u'\n发信站', 1)
-
+        txt = self.COLOR_RE.sub("", txt)
         txt = txt.splitlines()
         self.parse_meta(txt)
         self.parse_body(txt)
@@ -130,7 +133,7 @@ class Topic:
     def to_json(self):
         return {
                 'board': self.board,
-                #'idx': self.idx,
+                'idx': self.idx,
                 'nextIdx': self.next_idx,
                 'pid': self.pid,
                 'posts': [i.to_json() for i in self.posts],
@@ -295,4 +298,3 @@ class Session:
 
     def loads(self, s):
         self.vd, self.key, self.num, self.uid = s.split(',')
-

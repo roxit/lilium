@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'lilybbs',
-    version = '2.0testing',
+    version = '2.0dev',
     description = "Python SDK for Nanjing University's Lily BBS",
     author = 'Shanshi Shi',
     author_email = 'shishanshi@gmail.com',
