@@ -1,3 +1,5 @@
+import re
+import htmlentitydefs
 
 
 def is_zh(c):
@@ -38,4 +40,3 @@ def wrap_zh(s, maxc):
     if s:
         ret.append(s)
     return ret
-

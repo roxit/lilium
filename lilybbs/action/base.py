@@ -17,7 +17,8 @@ class BaseAction(object):
                 self.params,
                 self.payload)
         self.html = self.html.replace(u'<nobr>', u'')
-        self.soup = BeautifulSoup(self.html)
+        self.soup = BeautifulSoup(self.html,
+            convertEntities=BeautifulSoup.ALL_ENTITIES)
 
     def parse(self):
         raise NotImplementedError
