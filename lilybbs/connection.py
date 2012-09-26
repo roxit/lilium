@@ -7,7 +7,7 @@ import urllib
 import urllib2
 from urllib2 import URLError
 
-from lilybbs.exc import NetworkError
+from .exc import NetworkError
 
 
 class Connection:
@@ -79,4 +79,3 @@ def encode_params(params, enc):
         else:
             ret.append('{0}={1}'.format(quote(k, enc), quote(v, enc)))
     return '&'.join(ret) if ret else ''
-

@@ -1,4 +1,4 @@
-from lilybbs.action.base import BaseAction
+from .base import BaseAction
 
 
 class FetchEmoticonAction(BaseAction):
@@ -14,4 +14,3 @@ class FetchEmoticonAction(BaseAction):
         for i in items:
             ret[i['title']] = i['src']
         return ret
-

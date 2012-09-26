@@ -1,7 +1,7 @@
 # -*- coding=utf-8 -*-
-from lilybbs.action.base import BaseAction
-from lilybbs.models import Topic, Post
-from lilybbs.exc import ContentError
+from .base import BaseAction
+from ..models import Topic, Post
+from ..exc import ContentError
 
 
 class FetchTopicAction(BaseAction):

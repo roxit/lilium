@@ -25,4 +25,3 @@ class FetchHotAction(BaseAction):
                 h.pid = self.parse_pid(links[0]['href'])
                 grp.append(h)
         return ret
-

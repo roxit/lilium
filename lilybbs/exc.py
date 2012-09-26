@@ -41,4 +41,3 @@ class NotLoggedIn(LilyError):
 
     def __init__(self, message=None):
         super(NotLoggedIn, self).__init__(message or self.DEFAULT_MESSAGE)
-

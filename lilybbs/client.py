@@ -3,9 +3,9 @@ import logging
 import os
 import json
 
-from lilybbs.action import *
-from lilybbs.connection import Connection
-from lilybbs.models import BoardManager, Session
+from .action import *
+from .connection import Connection
+from .models import BoardManager, Session
 
 logging.getLogger().setLevel(logging.DEBUG)
 
@@ -78,10 +78,3 @@ class Client:
         fn = os.path.join(ROOT_DIR, 'assets/emoticon.json')
         with open(fn, 'w') as f:
             json.dump(ret, f)
-
-
-if __name__ == '__main__':
-    client = Client()
-    #client.fetch_all_board()
-    #client.fetch_emoticon()
-

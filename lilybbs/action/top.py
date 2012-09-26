@@ -1,6 +1,6 @@
 # -*- coding=utf-8 -*-
-from lilybbs.action.base import BaseAction
-from lilybbs.models import Header, Page
+from .base import BaseAction
+from ..models import Header
 
 
 class FetchTopAction(BaseAction):
@@ -19,4 +19,3 @@ class FetchTopAction(BaseAction):
             h.reply_count = int(cells[4].text.strip())
             ret.append(h)
         return ret
-

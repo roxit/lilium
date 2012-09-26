@@ -1,5 +1,3 @@
-import re
-import htmlentitydefs
 
 
 def is_zh(c):

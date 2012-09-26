@@ -2,9 +2,9 @@
 import re
 from time import sleep
 
-from lilybbs.action.base import BaseAction
-from lilybbs.exc import NetworkError
-from lilybbs.models import BoardManager, Board, Section
+from .base import BaseAction
+from ..exc import NetworkError
+from ..models import BoardManager, Board, Section
 
 
 class FetchBoardManagerAction(BaseAction):
@@ -47,4 +47,3 @@ class FetchBoardManagerAction(BaseAction):
             sec = act.parse()
             ret.append(sec)
         return ret
-

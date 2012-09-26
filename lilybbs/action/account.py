@@ -2,9 +2,9 @@
 from random import randint
 import re
 
-from lilybbs.action.base import BaseAction
-from lilybbs.exc import InvalidLogin, NotLoggedIn
-from lilybbs.models import Session
+from .base import BaseAction
+from ..exc import InvalidLogin, NotLoggedIn
+from ..models import Session
 
 
 class LogInAction(BaseAction):
@@ -71,4 +71,3 @@ class FetchSubscriptionAction(BaseAction):
         items = items.findAll('a')[:-1]
         ret = [i.text for i in items]
         return ret
-

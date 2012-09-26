@@ -1,10 +1,10 @@
 # -*- coding=utf-8 -*-
 from urlparse import urlparse, parse_qs
 
-from lilybbs.action.base import BaseAction
-from lilybbs.exc import FrequencyLimitExceeded, NotLoggedIn
-from lilybbs.models import Post
-from lilybbs.utils import wrap_zh
+from .base import BaseAction
+from ..exc import FrequencyLimitExceeded, NotLoggedIn
+from ..models import Post
+from ..utils import wrap_zh
 
 
 class FetchPostAction(BaseAction):
@@ -69,4 +69,3 @@ class ComposeAction(BaseAction):
             if u'两次发文间隔过密' in self.soup.text:
                 raise FrequencyLimitExceeded()
             raise NotLoggedIn(self.soup.text)
-

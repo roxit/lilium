@@ -6,8 +6,8 @@ import os
 import re
 from xml.etree.ElementTree import ElementTree, Element, SubElement, tostring
 
-from lilybbs.exc import LilyError
-from lilybbs.utils import len_zh
+from .exc import LilyError
+from .utils import len_zh
 
 logger = logging.getLogger(__name__)
 

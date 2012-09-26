@@ -1,8 +1,8 @@
 # -*- coding=utf-8 -*-
 from datetime import datetime
 
-from lilybbs.action.base import BaseAction
-from lilybbs.models import Header, Page
+from .base import BaseAction
+from ..models import Header, Page
 
 
 class FetchPageAction(BaseAction):
@@ -65,4 +65,3 @@ class FetchPageAction(BaseAction):
         else:
             ret.view_count = int(tmp)
         return ret
-

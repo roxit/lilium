@@ -1,7 +1,7 @@
 # -*- coding=utf-8 -*-
 import unittest
 
-from lilybbs import Client
+from lilybbs.client import Client
 from lilybbs.models import *
 
 
@@ -113,4 +113,3 @@ class SessionTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
