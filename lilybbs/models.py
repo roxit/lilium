@@ -21,7 +21,7 @@ class Post:
     DATE_FMT = u'%a %b %d %H:%M:%S %Y'
     IP_RE = re.compile(ur'\[FROM: (.+)\]')
 
-    COLOR_RE = re.compile(ur'\x1b\[\d*(;\d+)?m')
+    COLOR_RE = re.compile(ur'\x1b\[\d{0,2}(;\d+){0,2}m')
     IMG_RE = re.compile(ur'(http://(www\.)?[\w./-]+?\.(jpe?g|gif|png))', re.IGNORECASE)
     #URL_RE = re.compile(ur'http://(www\.)?[\w./-]+?$')
 
@@ -105,14 +105,14 @@ class Post:
                 self.body.append(i)
             prev_len = len_zh(i)
         self.cleanup()
-        self.body = '\r\n'.join(self.body)
+        self.body = u'\n'.join(self.body)
 
     def parse_post(self, txt):
         # TODO: what's the following 3 lines for?
         i = txt.find(u'发信站')
         if txt[i - 1] != u'\n':
             txt = txt.replace(u'发信站', u'\n发信站', 1)
-        txt = self.COLOR_RE.sub("", txt)
+        txt = self.COLOR_RE.sub('', txt)
         txt = txt.splitlines()
         self.parse_meta(txt)
         self.parse_body(txt)
