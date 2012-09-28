@@ -22,4 +22,3 @@ class CheckSessionView(SessionView):
 class SubscriptionView(SessionView):
 
     GET_ACTION = 'fetch_subscription'
-

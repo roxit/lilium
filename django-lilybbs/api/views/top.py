@@ -9,4 +9,3 @@ class TopView(BaseView):
         for i, h in enumerate(data):
             data[i] = h.to_json()
         return data
-

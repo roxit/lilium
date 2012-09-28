@@ -26,7 +26,7 @@ class ReadOnlyTest(TestCase):
 
     def test_fetch_post(self):
         brd = 'D_Computer'
-        pid = '1346910579'
+        pid = 1346910579
         num = 10443
         url = '/api/post/{}/{}/?num={}'.format(brd, pid, num)
         resp = self.client.get(url)
@@ -45,7 +45,7 @@ class ReadOnlyTest(TestCase):
 
     def test_fetch_topic(self):
         brd = 'D_Computer'
-        pid = '1340356876'
+        pid = 1340356876
         url = '/api/topic/{}/{}/'.format(brd, pid)
         resp = self.client.get(url)
         ret = json.loads(resp.content)

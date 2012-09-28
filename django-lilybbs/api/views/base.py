@@ -18,10 +18,10 @@ class BaseView(View):
         self.client = Client()
 
     def to_json(self, data):
-        '''
+        """
         Override this method if `ret` cannot be processed
         by `json.dumps` directly
-        '''
+        """
         return data
 
     def get_json_response(self, ret=None, exc=None):
@@ -79,9 +79,6 @@ class BaseView(View):
 
 
 class SessionView(BaseView):
-    '''
-
-    '''
 
     GET_ACTION = None
 
@@ -105,4 +102,3 @@ class SessionView(BaseView):
         if ret:
             return ret
         return super(SessionView, self).post(request, *args, **kwargs)
-

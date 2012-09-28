@@ -4,7 +4,7 @@ from urlparse import urlparse, parse_qs
 from .base import BaseAction
 from ..exc import FrequencyLimitExceeded, NotLoggedIn
 from ..models import Post
-from ..utils import wrap_zh
+from ..utils import wwrap
 
 
 class FetchPostAction(BaseAction):
@@ -56,7 +56,7 @@ class ComposeAction(BaseAction):
         lines = self.body.split(u'\n')
         body = []
         for l in lines:
-            body.append(u'\r\n'.join(wrap_zh(l, self.MAXC)))
+            body.append(u'\r\n'.join(wwrap(l, self.MAXC)))
         self.payload = {'title': self.title, 'text': '\r\n'.join(body)}
         if self.pid:
             self.payload['reid'] = self.pid

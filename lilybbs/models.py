@@ -7,7 +7,7 @@ import re
 from xml.etree.ElementTree import ElementTree, Element, SubElement, tostring
 
 from .exc import LilyError
-from .utils import len_zh
+from .utils import wlen
 
 logger = logging.getLogger(__name__)
 
@@ -103,7 +103,7 @@ class Post:
                 self.body[-1] += i
             else:
                 self.body.append(i)
-            prev_len = len_zh(i)
+            prev_len = wlen(i)
         self.cleanup()
         self.body = u'\n'.join(self.body)
 

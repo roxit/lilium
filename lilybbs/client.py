@@ -43,7 +43,7 @@ class Client:
         which is 24.5 chinese chars
         '''
         pid = int(pid) if pid else None
-        gid = int(pid) if gid else None
+        gid = int(gid) if gid else None
         return ComposeAction.run(self, board, title, body, pid, gid)
 
     def fetch_post(self, board, pid, num, **kwargs):

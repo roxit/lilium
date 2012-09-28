@@ -6,4 +6,3 @@ class PageView(BaseView):
 
     def to_json(self, data):
         return data.to_json()
-

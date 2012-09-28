@@ -1,31 +1,26 @@
+import unicodedata
 
 
-def is_zh(c):
-    # TODO
-    return any([u'\u4E00' <= c <= u'\u62FF',
-            u'\u6300' <= c <= u'\u77FF',
-            u'\u7800' <= c <= u'\u8CFF',
-            u'\u8D00' <= c <= u'\u9FCC',
-            u'\uFF00' <= c <= u'\uFFEF',
-            u'\u3001' <= c <= u'\u303F'])    # TODO
+def is_wide(c):
+    return unicodedata.east_asian_width(c) in ['F', 'W', 'A']
 
 
-def len_zh(s):
+def wlen(s):
     ret = len(s)
     for i in s:
-        if is_zh(i):
+        if is_wide(i):
             ret += 1
     return ret
 
 
-def wrap_zh(s, maxc):
+def wwrap(s, maxc):
     ret = []
-    while len_zh(s) > maxc:
-        # len_zh(s) is at least maxc+1
+    while wlen(s) > maxc:
+        # wlen(s) is at least maxc+1
         i = 0
         iz = 0
         while iz < maxc:
-            if is_zh(s[i]):
+            if is_wide(s[i]):
                 iz += 2
             else:
                 iz += 1
